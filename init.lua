@@ -61,6 +61,49 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 -- =================================================================================================
 -- NVIM_AUTOCMDS
 -- =================================================================================================
+local binary_group = vim.api.nvim_create_augroup("Binary", { clear = true })
+
+vim.api.nvim_create_autocmd("BufReadPre", {
+    group = binary_group,
+    pattern = "*.bin",
+    command = "set binary",
+})
+
+vim.api.nvim_create_autocmd("BufReadPost", {
+    group = binary_group,
+    pattern = "*.bin",
+    callback = function()
+        if vim.bo.binary then
+            vim.cmd("silent %!xxd -c 32")
+            vim.bo.filetype = "xxd"
+            vim.cmd("redraw")
+        end
+    end,
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+    group = binary_group,
+    pattern = "*.bin",
+    callback = function()
+        if vim.bo.binary then
+            vim.b.xxd_view = vim.fn.winsaveview()
+            vim.cmd("silent %!xxd -r -c 32")
+        end
+    end,
+})
+
+vim.api.nvim_create_autocmd("BufWritePost", {
+    group = binary_group,
+    pattern = "*.bin",
+    callback = function()
+        if vim.bo.binary then
+            vim.cmd("silent %!xxd -c 32")
+            vim.bo.modified = false
+            vim.fn.winrestview(vim.b.xxd_view)
+            vim.cmd("redraw")
+        end
+    end,
+})
 
 -- =================================================================================================
 -- NVIM_PLUGIN_MANAGER
