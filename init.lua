@@ -6,6 +6,7 @@ require("secret")
 -- =================================================================================================
 -- TABLE_OF_CONTENTS
 -- =================================================================================================
+-- NVIM_GVAR
 -- NVIM_OPTIONS
 -- NVIM_KEYMAPS
 -- NVIM_AUTOCMDS
@@ -15,90 +16,92 @@ require("secret")
 -- MY_NOTES
 
 -- =================================================================================================
+-- NVIM_GVAR
+-- =================================================================================================
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+vim.g.have_nerd_font = false
+vim.g.fugitive_git_executable = "git"
+
+-- =================================================================================================
 -- NVIM_OPTIONS
 -- =================================================================================================
-vim.g.mapleader = " " -- See NOTES_OPTIONS_LEADER
-vim.g.maplocalleader = " " -- See NOTES_OPTIONS_LEADER
--- vim.o.relativenumber = true -- See NOTES_OPTIONS_RELATIVENUMBER
-vim.g.have_nerd_font = false -- See NOTES_OPTIONS_NERD_FONT
-vim.o.autoindent = true -- See NOTES_OPTIONS_AUTOINDENT
-vim.o.autoread = true -- See NOTES_OPTIONS_AUTOREAD
-vim.o.background = "dark" -- See NOTES_OPTIONS_BACKGROUND
-vim.o.backup = false -- See NOTES_OPTIONS_BACKUP
-vim.o.belloff = "all" -- See NOTES_OPTIONS_BELLOFF
-vim.o.breakindent = true -- See NOTES_OPTIONS_BREAKINDENT
-vim.o.cmdheight = 2 -- See NOTES_OPTIONS_CMDHEIGHT
-vim.o.confirm = true -- See NOTES_OPTIONS_CONFIRM
-vim.o.cursorcolumn = true -- See NOTES_OPTIONS_CURSORCOLUMN
-vim.o.cursorline = true -- See NOTES_OPTIONS_CURSORLINE
-vim.o.expandtab = true -- See NOTES_OPTIONS_EXPANDTAB
-vim.o.fileencoding = "utf-8" -- See NOTES_OPTIONS_FILEENCODING
-vim.o.fileformat = "unix" -- See NOTES_OPTIONS_FILEFORMAT
-vim.o.foldenable = false -- See NOTES_OPTIONS_FOLDENABLE
-vim.o.grepformat = "%f:%l:%c:%m,%f:%l:%m" -- See NOTES_OPTIONS_GREPFORMAT
-vim.o.hlsearch = true -- See NOTES_OPTIONS_HLSEARCH
-vim.o.ignorecase = true -- See NOTES_OPTIONS_IGNORECASE
-vim.o.inccommand = "split" -- See NOTES_OPTIONS_INCCOMMAND
-vim.o.infercase = true -- See NOTES_OPTIONS_INFERCASE
-vim.o.iskeyword = "@,48-57,_,192-255,-" -- See NOTES_OPTIONS_ISKEYWORD
-vim.o.laststatus = 2 -- See NOTES_OPTIONS_LASTSTATUS
-vim.o.list = true -- See NOTES_OPTIONS_LIST
-vim.o.modeline = true -- See NOTES_OPTIONS_MODELINE
-vim.o.modelines = 5 -- See NOTES_OPTIONS_MODELINES
-vim.o.mouse = "a" -- See NOTES_OPTIONS_MOUSE
-vim.o.number = true -- See NOTES_OPTIONS_NUMBER
-vim.o.pumheight = 50 -- See NOTES_OPTIONS_PUMHEIGHT
-vim.o.scrolloff = 10 -- See NOTES_OPTIONS_SCROLLOFF
-vim.o.shiftwidth = 4 -- See NOTES_OPTIONS_SHIFTWIDTH
-vim.o.shortmess = "flnxtocTO" -- See NOTES_OPTIONS_SHORTMESS
-vim.o.showmode = false -- See NOTES_OPTIONS_SHOWMODE
-vim.o.signcolumn = "yes" -- See NOTES_OPTIONS_SIGNCOLUMN
-vim.o.smartcase = true -- See NOTES_OPTIONS_SMARTCASE
-vim.o.smarttab = true -- See NOTES_OPTIONS_SMARTTAB
-vim.o.softtabstop = 4 -- See NOTES_OPTIONS_SOFTTABSTOP
-vim.o.splitbelow = true -- See NOTES_OPTIONS_SPLITBELOW
-vim.o.splitright = true -- See NOTES_OPTIONS_SPLITRIGHT
-vim.o.swapfile = false -- See NOTES_OPTIONS_SWAPFILE
-vim.o.tabstop = 4 -- See NOTES_OPTIONS_TABSTOP
-vim.o.termguicolors = true -- See NOTES_OPTIONS_TERMGUICOLORS
-vim.o.textwidth = 100 -- See NOTES_OPTIONS_TEXTWIDTH
-vim.o.timeoutlen = 300 -- See NOTES_OPTIONS_TIMEOUTLEN
-vim.o.undofile = true -- See NOTES_OPTIONS_UNDOFILE
-vim.o.updatetime = 250 -- See NOTES_OPTIONS_UPDATETIME
-vim.o.wildcharm = vim.fn.char2nr("\t") -- See NOTES_OPTIONS_WILDCHARM
-vim.o.wildignorecase = true -- See NOTES_OPTIONS_WILDIGNORECASE
-vim.o.wildoptions = "pum" -- See NOTES_OPTIONS_WILDOPTIONS
-vim.o.wrap = false -- See NOTES_OPTIONS_WRAP
-vim.o.writebackup = false -- See NOTES_OPTIONS_WRITEBACKUP
-vim.opt.colorcolumn = { "81", "101", "121" } -- See NOTES_OPTIONS_COLORCOLUMN
-vim.opt.complete = { ".", "w", "b", "u", "t" } -- See NOTES_OPTIONS_COMPLETE
-vim.opt.completeopt = { "menuone", "noselect", "popup" } -- See NOTES_OPTIONS_COMPLETEOPT
-vim.opt.formatoptions:append("mB") -- See NOTES_OPTIONS_FORMATOPTIONS
-vim.opt.path:append("**") -- See NOTES_OPTIONS_PATH
-vim.opt.sessionoptions:append({ "tabpages", "globals" }) -- See NOTES_OPTIONS_SESSIONOPTIONS
+vim.o.autoindent = true
+vim.o.autoread = true
+vim.o.background = "dark"
+vim.o.backup = false
+vim.o.belloff = "all"
+vim.o.breakindent = true
+vim.o.cmdheight = 2
+vim.o.confirm = true
+vim.o.cursorcolumn = true
+vim.o.cursorline = true
+vim.o.expandtab = true
+vim.o.fileencoding = "utf-8"
+vim.o.fileformat = "unix"
+vim.o.foldenable = false
+vim.o.grepformat = "%f:%l:%c:%m,%f:%l:%m"
+vim.o.hlsearch = true
+vim.o.ignorecase = true
+vim.o.inccommand = "split"
+vim.o.infercase = true
+vim.o.iskeyword = "@,48-57,_,192-255,-"
+vim.o.laststatus = 2
+vim.o.list = true
+vim.o.modeline = true
+vim.o.modelines = 5
+vim.o.mouse = "a"
+vim.o.number = true
+vim.o.pumheight = 50
+vim.o.scrolloff = 10
+vim.o.shiftwidth = 4
+vim.o.shortmess = "flnxtocTO"
+vim.o.showmode = false
+vim.o.signcolumn = "yes"
+vim.o.smartcase = true
+vim.o.smarttab = true
+vim.o.softtabstop = 4
+vim.o.splitbelow = true
+vim.o.splitright = true
+vim.o.swapfile = false
+vim.o.tabstop = 4
+vim.o.termguicolors = true
+vim.o.textwidth = 100
+vim.o.timeoutlen = 300
+vim.o.undofile = true
+vim.o.updatetime = 250
+vim.o.wildcharm = vim.fn.char2nr("\t")
+vim.o.wildignorecase = true
+vim.o.wildoptions = "pum"
+vim.o.wrap = false
+vim.o.writebackup = false
+vim.opt.colorcolumn = { "81", "101", "121" }
+vim.opt.complete = { ".", "w", "b", "u", "t" }
+vim.opt.completeopt = { "menuone", "noselect", "popup" }
+vim.opt.formatoptions:append("mB")
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+vim.opt.path:append("**")
+vim.opt.sessionoptions:append({ "tabpages", "globals" })
+NS
+vim.schedule(function() vim.o.clipboard = "unnamedplus" end)
 
 if vim.fn.has("gui_running") == 1 or vim.g.neovide then
-    pcall(function()
-        if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
-            vim.o.guifont = "Agave Nerd Font:h12"
-        else
-            vim.o.guifont = "Agave Nerd Font:h16"
-        end
-        vim.opt.guioptions:append("k")
-        vim.opt.guioptions:remove("L")
-        vim.opt.guioptions:remove("T")
-        vim.opt.guioptions:remove("e")
-        vim.opt.guioptions:remove("m")
-        vim.opt.guioptions:remove("r")
-    end)
+    if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+        vim.o.guifont = "Agave Nerd Font:h12"
+    else
+        vim.o.guifont = "Agave Nerd Font:h16"
+    end
+    vim.opt.guioptions:append("k")
+    vim.opt.guioptions:remove("L")
+    vim.opt.guioptions:remove("T")
+    vim.opt.guioptions:remove("e")
+    vim.opt.guioptions:remove("m")
+    vim.opt.guioptions:remove("r")
     vim.o.columns = 107
     vim.o.lines = 25
-end -- See NOTES_OPTIONS_GUI
+end
 
-if vim.fn.has("unix") == 1 then
-    vim.o.undodir = vim.fn.expand("$HOME/.vim/undo/")
-    vim.o.shadafile = vim.fn.expand("$HOME/.vim/main.shada")
-else
+if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
     vim.o.undodir = vim.fn.expand("$HOME/vimfiles/undo/")
     vim.o.shadafile = vim.fn.expand("$HOME/vimfiles/main.shada")
 
@@ -107,7 +110,9 @@ else
         local pwsh = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell"
         vim.o.shell = pwsh
         vim.o.shellcmdflag =
-            "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
+            "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command "
+            .. "[Console]::InputEncoding=[Console]::OutputEncoding"
+            .. "=[System.Text.Encoding]::UTF8;"
         vim.o.shellquote = ""
         vim.o.shellxquote = ""
         vim.o.shellpipe = "| Out-File -Encoding UTF8 %s"
@@ -118,29 +123,113 @@ else
         vim.o.shellquote = ""
         vim.o.shellxquote = '"'
     end
-
-    -- Ensure git executable is found without space issues for fugitive
-    vim.g.fugitive_git_executable = "git"
-end -- See NOTES_OPTIONS_PLATFORM
-
-vim.schedule(function()
-    vim.o.clipboard = "unnamedplus"
-end) -- See NOTES_OPTIONS_CLIPBOARD
-
-vim.opt.listchars = {
-    tab = "» ",
-    trail = "·",
-    nbsp = "␣",
-} -- See NOTES_OPTIONS_LISTCHARS
+else
+    vim.o.undodir = vim.fn.expand("$HOME/.vim/undo/")
+    vim.o.shadafile = vim.fn.expand("$HOME/.vim/main.shada")
+end
 
 -- =================================================================================================
 -- NVIM_KEYMAPS
 -- =================================================================================================
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
-vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
-vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
-vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
-vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+-- Basic mappings
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
+vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to left window" })
+vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to right window" })
+vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to lower window" })
+vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to upper window" })
+
+-- Config editing
+vim.keymap.set("n", "<leader>vimrc", "<cmd>vs $MYVIMRC<cr>", { desc = "Open init.lua" })
+vim.keymap.set("n", "<leader>vimrk", function()
+    local path = vim.fn.stdpath("data") .. "/lazy/rookie_toys.nvim/plugin/rookie_toys.lua"
+    vim.cmd("vs " .. path)
+end, { desc = "Open rookie_toys.lua" })
+vim.keymap.set("n", "<leader>vim", ":vs $MYVIMRC<CR>", { silent = true, desc = "Open init.lua in split" })
+
+-- Navigation & Search
+vim.keymap.set("n", "*", "*zz",
+    { desc = (vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1) and "Windows refine search" or "macOS refine search" })
+vim.keymap.set("n", "j", "gj", { desc = "Move down (display line)" })
+vim.keymap.set("n", "k", "gk", { desc = "Move up (display line)" })
+vim.keymap.set("n", "<F2>", ":%s/\\C\\<<C-r><C-w>\\>/<C-r><C-w>/g<Left><Left>",
+    { desc = "Search and replace word under cursor" })
+
+-- Line movement
+vim.keymap.set("n", "<M-Down>", ":m .+1<CR>==", { desc = "Move line down" })
+vim.keymap.set("n", "<M-Up>", ":m .-2<CR>==", { desc = "Move line up" })
+vim.keymap.set("n", "<M-j>", ":m .+1<CR>==", { silent = true, desc = "Move line down" })
+vim.keymap.set("n", "<M-k>", ":m .-2<CR>==", { silent = true, desc = "Move line up" })
+
+-- Window & Tab management
+vim.keymap.set("n", "+", ":vertical resize +2<CR>", { silent = true, desc = "Increase window width" })
+vim.keymap.set("n", "_", ":vertical resize -2<CR>", { silent = true, desc = "Decrease window width" })
+vim.keymap.set("n", "<C-M-PageDown>", ":tabmove +1<CR>", { silent = true, desc = "Move tab right" })
+vim.keymap.set("n", "<C-M-PageUp>", ":tabmove -1<CR>", { silent = true, desc = "Move tab left" })
+vim.keymap.set("n", "<C-S-Tab>", "gT", { silent = true, desc = "Previous tab" })
+vim.keymap.set("n", "<C-t>", ":tabnew<CR>", { silent = true, desc = "New tab" })
+vim.keymap.set("n", "<C-Tab>", "gt", { silent = true, desc = "Next tab" })
+vim.keymap.set("n", "<C-q>", ":q<CR>", { silent = true, desc = "Close window" })
+vim.keymap.set("n", "<leader><C-q>", ":tabclose<CR>", { silent = true, desc = "Close tab" })
+vim.keymap.set("n", "<C-w>i", "gt", { silent = true, desc = "Next tab" })
+vim.keymap.set("n", "<C-w>u", "gT", { silent = true, desc = "Previous tab" })
+
+-- Quickfix list
+vim.keymap.set("n", "<F10>", ":cnext<CR>", { silent = true, desc = "Next quickfix item" })
+vim.keymap.set("n", "<F11>", ":cclose<CR>", { silent = true, desc = "Close quickfix list" })
+vim.keymap.set("n", "<F8>", ":copen<CR>", { silent = true, desc = "Open quickfix list" })
+vim.keymap.set("n", "<F9>", ":cprevious<CR>", { silent = true, desc = "Previous quickfix item" })
+
+-- Utilities
+vim.keymap.set("n", "<leader>clr", ":%bd<bar>e #<bar>normal `<CR>",
+    { silent = true, desc = "Clear all buffers but current" })
+vim.keymap.set("n", "<leader>lh", ":noh<CR>", { silent = true, desc = "Clear highlights" })
+vim.keymap.set("n", "<leader>tm", "<cmd>vs|term<CR>", { silent = true, desc = "Open terminal in split" })
+vim.keymap.set("n", "K", "i<CR><Esc>", { desc = "Insert newline at cursor" })
+vim.keymap.set("n", "O", "O<Space><BS><Esc>", { desc = "Insert empty line above" })
+vim.keymap.set("n", "o", "o<Space><BS><Esc>", { desc = "Insert empty line below" })
+vim.keymap.set("n", "go", '"0yi):!start <C-r>0<CR>', { desc = "Open link under cursor (Windows)" })
+
+-- Git
+vim.keymap.set("n", "<leader>sync", function()
+    vim.cmd("wa")
+    vim.cmd("silent !git pull")
+    vim.cmd("silent !git add .")
+    vim.cmd('silent !git commit -m "update by vim"')
+    vim.cmd("silent !git push")
+    vim.cmd("silent !git fetch")
+    vim.cmd("!git log --oneline --graph --all --decorate")
+end, { silent = true, desc = "Git sync & log" })
+
+-- Command mode
+vim.keymap.set("c", "<C-v>", "<C-r>*", { desc = "Paste from clipboard" })
+
+-- Normal & Visual
+vim.keymap.set({ "n", "v" }, "<C-d>", "<C-d>zz", { silent = true, desc = "Scroll down and center" })
+vim.keymap.set({ "n", "v" }, "<C-f>", "<C-u>zz", { silent = true, desc = "Scroll up and center" })
+
+-- Normal, Visual, Operator-pending
+vim.keymap.set({ "n", "v", "o" }, "H", "g^", { desc = "Move to start of line" })
+vim.keymap.set({ "n", "v", "o" }, "L", "g_", { desc = "Move to end of line" })
+
+-- Visual mode
+vim.keymap.set("v", "/", '"-y/<C-r>-<CR>N', { desc = "Search for selection" })
+vim.keymap.set("v", "<C-j>", ":m '><+1<CR>gv=gv", { desc = "Move selection down" })
+vim.keymap.set("v", "<C-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+vim.keymap.set("v", "<F2>", '"-y:%s/<C-r>-\\C/<C-r>-/g<Left><Left>', { desc = "Replace selection" })
+vim.keymap.set("v", "<M-Down>", ":m '><+1<CR>gv=gv", { desc = "Move selection down" })
+vim.keymap.set("v", "<M-Up>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+vim.keymap.set("v", "<M-j>", ":m '><+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
+vim.keymap.set("v", "<M-k>", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
+vim.keymap.set("v", "<leader>ss", ":sort<CR>", { desc = "Sort selection" })
+vim.keymap.set("v", "<C-b>", '"-di**<C-r>-**<Esc>', { silent = true, desc = "Surround with bold" })
+vim.keymap.set("v", "y", "ygv<Esc>", { desc = "Yank and keep position" })
+
+-- Select mode
+vim.keymap.set("x", "p", "P", { desc = "Paste without overwriting register" })
+
+-- Terminal mode
+vim.keymap.set("t", "kj", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
+vim.keymap.set("t", "<S-Enter>", [[<C-v><Enter>]], { buffer = true, desc = "Send Enter" })
 
 -- =================================================================================================
 -- NVIM_AUTOCMDS
@@ -189,10 +278,6 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     end,
 })
 
--- Highlight when yanking (copying) text
--- See `:help lua-guide-autocommands`
--- Try it with `yap` in normal mode
--- See `:help vim.hl.on_yank()`
 local highlight_yank_group = vim.api.nvim_create_augroup("highlight_yank", { clear = true })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -247,11 +332,11 @@ add_lazy({
         icons = { mappings = vim.g.have_nerd_font },
         -- Document existing key chains
         spec = {
-            { "<leader>s", group = "[S]earch", mode = { "n", "v" } },
+            { "<leader>s", group = "[S]earch",    mode = { "n", "v" } },
             { "<leader>t", group = "[T]oggle" },
             -- Enable gitsigns recommended keymaps first
-            { "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
-            { "gr", group = "LSP Actions", mode = { "n" } },
+            { "<leader>h", group = "Git [H]unk",  mode = { "n", "v" } },
+            { "gr",        group = "LSP Actions", mode = { "n" } },
         },
     },
 })
@@ -1073,241 +1158,3 @@ require("lazy").setup(lazy_plugins)
 -- =================================================================================================
 -- MY_NOTES
 -- =================================================================================================
--- NOTES_OPTIONS_LEADER
---     Set <space> as the leader key
---     See `:help mapleader`
---     Must happen before plugins are loaded (otherwise wrong leader will be used)
---
--- NOTES_OPTIONS_NERD_FONT
---     Set to true if you have a Nerd Font installed and selected in the terminal
---
--- NOTES_OPTIONS_NUMBER
---     Make line numbers default
---
--- NOTES_OPTIONS_MOUSE
---     Enable mouse mode, can be useful for resizing splits for example!
---
--- NOTES_OPTIONS_SHOWMODE
---     Don't show the mode, since it's already in the status line
---
--- NOTES_OPTIONS_CLIPBOARD
---     Sync clipboard between OS and Neovim.
---     Schedule the setting after `UiEnter` because it can increase startup-time.
---     Remove this option if you want your OS clipboard to remain independent.
---     See `:help 'clipboard'`
---
--- NOTES_OPTIONS_BREAKINDENT
---     Enable break indent
---
--- NOTES_OPTIONS_UNDOFILE
---     Enable undo/redo changes even after closing and reopening a file
---
--- NOTES_OPTIONS_IGNORECASE
---     Case-insensitive searching UNLESS \C or one or more capital letters in the search term
---
--- NOTES_OPTIONS_SMARTCASE
---     Case-insensitive searching UNLESS \C or one or more capital letters in the search term
---
--- NOTES_OPTIONS_SIGNCOLUMN
---     Keep signcolumn on by default
---
--- NOTES_OPTIONS_UPDATETIME
---     Decrease update time
---
--- NOTES_OPTIONS_TIMEOUTLEN
---     Decrease mapped sequence wait time
---
--- NOTES_OPTIONS_SPLITRIGHT
---     Configure how new splits should be opened
---
--- NOTES_OPTIONS_SPLITBELOW
---     Configure how new splits should be opened
---
--- NOTES_OPTIONS_LIST
---     Sets how neovim will display certain whitespace characters in the editor.
---     See `:help 'list'`
---     and `:help 'listchars'`
---
--- NOTES_OPTIONS_LISTCHARS
---     Notice listchars is set using `vim.opt` instead of `vim.o`.
---     It is very similar to `vim.o` but offers an interface for conveniently interacting with tables.
---     See `:help lua-options`
---     and `:help lua-guide-options`
---
--- NOTES_OPTIONS_INCCOMMAND
---     Preview substitutions live, as you type!
---
--- NOTES_OPTIONS_CURSORLINE
---     Show which line your cursor is on
---
--- NOTES_OPTIONS_CURSORCOLUMN
---     Show which column your cursor is on
---
--- NOTES_OPTIONS_SCROLLOFF
---     Minimal number of screen lines to keep above and below the cursor.
---
--- NOTES_OPTIONS_CONFIRM
---     if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
---     instead raise a dialog asking if you wish to save the current file(s)
---     See `:help 'confirm'`
---
--- NOTES_OPTIONS_AUTOINDENT
---     Copy indent from current line when starting a new line.
---     See `:help 'autoindent'`
---
--- NOTES_OPTIONS_AUTOREAD
---     Automatically re-read a file changed outside of Neovim.
---     See `:help 'autoread'`
---
--- NOTES_OPTIONS_BACKGROUND
---     "dark" tells Neovim to use colors suitable for a dark terminal background.
---     See `:help 'background'`
---
--- NOTES_OPTIONS_BELLOFF
---     Disable the bell for all events.
---     See `:help 'belloff'`
---
--- NOTES_OPTIONS_CMDHEIGHT
---     Number of screen lines for the command-line. 2 gives more space for messages.
---     See `:help 'cmdheight'`
---
--- NOTES_OPTIONS_COLORCOLUMN
---     Columns highlighted with ColorColumn. Useful as visual rulers.
---     See `:help 'colorcolumn'`
---
--- NOTES_OPTIONS_COMPLETE
---     Specify how keyword completion works (insert mode completion sources).
---     See `:help 'complete'`
---
--- NOTES_OPTIONS_COMPLETEOPT
---     Configure the popup completion menu behavior (no auto-select, show popup menu).
---     See `:help 'completeopt'`
---
--- NOTES_OPTIONS_EXPANDTAB
---     Use spaces instead of tabs when inserting.
---     See `:help 'expandtab'`
---
--- NOTES_OPTIONS_FILEFORMAT
---     Use Unix-style line endings (LF) by default.
---     See `:help 'fileformat'`
---
--- NOTES_OPTIONS_FILEENCODING
---     Default file encoding when writing files.
---     See `:help 'fileencoding'`
---
--- NOTES_OPTIONS_FORMATOPTIONS
---     "m" auto-break at multibyte chars (>255), "B" don't auto-break between multi-byte chars when joining.
---     See `:help 'fo-table'`
---
--- NOTES_OPTIONS_GREPFORMAT
---     Format for grep output used by `:grep` and quickfix list.
---     See `:help 'grepformat'`
---
--- NOTES_OPTIONS_GUI
---     GUI-specific settings: font (platform-dependent size), guioptions (keep only scrollbar).
---     columns/lines set initial window dimensions.
---     See `:help 'guifont'`, `:help 'guioptions'`
---
--- NOTES_OPTIONS_HLSEARCH
---     Highlight all matches of the previous search pattern.
---     See `:help 'hlsearch'`
---
--- NOTES_OPTIONS_INFERCASE
---     Smart casing for keyword completion: infer case from the typed prefix.
---     See `:help 'infercase'`
---
--- NOTES_OPTIONS_ISKEYWORD
---     Characters included in keywords (affects w/b movements, completion, etc.).
---     See `:help 'iskeyword'`
---
--- NOTES_OPTIONS_LASTSTATUS
---     Always show the status line (2 = always, even with a single window).
---     See `:help 'laststatus'`
---
--- NOTES_OPTIONS_MODELINE
---     Enable reading modelines from files (allows per-file settings).
---     See `:help 'modeline'`
---
--- NOTES_OPTIONS_MODELINES
---     Number of lines to check for modelines at the beginning and end of the file.
---     See `:help 'modelines'`
---
--- NOTES_OPTIONS_BACKUP
---     Disable backup files (those ending with ~).
---     See `:help 'backup'`
---
--- NOTES_OPTIONS_FOLDENABLE
---     Disable folding by default (all folds are open on file open).
---     See `:help 'foldenable'`
---
--- NOTES_OPTIONS_SWAPFILE
---     Disable swap files (recovery files). Avoids clutter; relies on undofile instead.
---     See `:help 'swapfile'`
---
--- NOTES_OPTIONS_WRAP
---     Disable line wrapping. Long lines extend past the window edge.
---     See `:help 'wrap'`
---
--- NOTES_OPTIONS_WRITEBACKUP
---     Disable writebackup (backup before overwriting a file during save).
---     See `:help 'writebackup'`
---
--- NOTES_OPTIONS_PATH
---     Directories searched with `gf`, `:find`, etc. "**" enables recursive search.
---     See `:help 'path'`
---
--- NOTES_OPTIONS_PUMHEIGHT
---     Maximum number of items shown in the popup menu (completion menu).
---     See `:help 'pumheight'`
---
--- NOTES_OPTIONS_RELATIVENUMBER
---     Show line numbers relative to the cursor line (commented out by default).
---     See `:help 'relativenumber'`
---
--- NOTES_OPTIONS_SESSIONOPTIONS
---     What to save in a session file. Added "tabpages" and "globals" to the defaults.
---     See `:help 'sessionoptions'`
---
--- NOTES_OPTIONS_SHIFTWIDTH
---     Number of spaces for each step of (auto)indent.
---     See `:help 'shiftwidth'`
---
--- NOTES_OPTIONS_SHORTMESS
---     Shorten messages to avoid the hit-enter prompt.
---     See `:help 'shortmess'`
---
--- NOTES_OPTIONS_SMARTTAB
---     At line start, <Tab> inserts 'shiftwidth' worth of spaces instead of 'tabstop'.
---     See `:help 'smarttab'`
---
--- NOTES_OPTIONS_SOFTTABSTOP
---     Number of spaces a <Tab> counts for while editing (even with expandtab).
---     See `:help 'softtabstop'`
---
--- NOTES_OPTIONS_TABSTOP
---     Number of visual spaces per tab character.
---     See `:help 'tabstop'`
---
--- NOTES_OPTIONS_TERMGUICOLORS
---     Enable 24-bit RGB color in the terminal.
---     See `:help 'termguicolors'`
---
--- NOTES_OPTIONS_TEXTWIDTH
---     Maximum width of text for automatic formatting (gq, auto-wrap, etc.).
---     See `:help 'textwidth'`
---
--- NOTES_OPTIONS_WILDCHARM
---     Character that triggers wildcard expansion in command-line mode (<Tab> = 9).
---     See `:help 'wildcharm'`
---
--- NOTES_OPTIONS_WILDIGNORECASE
---     Ignore case when completing file/directory names in command-line mode.
---     See `:help 'wildignorecase'`
---
--- NOTES_OPTIONS_WILDOPTIONS
---     "pum" shows wildmenu completions in a popup menu.
---     See `:help 'wildoptions'`
---
--- NOTES_OPTIONS_PLATFORM
---     Platform-specific settings: undodir/shadafile paths, Windows shell configuration
---     (PowerShell with UTF-8 encoding), and fugitive git executable path.
