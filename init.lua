@@ -10,6 +10,8 @@ require("secret")
 -- NVIM_KEYMAPS
 -- NVIM_AUTOCMDS
 -- NVIM_PLUGIN_MANAGER
+-- NVIM_PLUGINS
+-- NVIM_LAZY_SETUP
 -- MY_NOTES
 
 -- =================================================================================================
@@ -21,7 +23,6 @@ vim.g.have_nerd_font = false -- See NOTES_OPTIONS_NERD_FONT
 vim.o.number = true -- See NOTES_OPTIONS_NUMBER
 vim.o.mouse = "a" -- See NOTES_OPTIONS_MOUSE
 vim.o.showmode = false -- See NOTES_OPTIONS_SHOWMODE
-vim.schedule(function() vim.o.clipboard = "unnamedplus" end) -- See NOTES_OPTIONS_CLIPBOARD
 vim.o.breakindent = true -- See NOTES_OPTIONS_BREAKINDENT
 vim.o.undofile = true -- See NOTES_OPTIONS_UNDOFILE
 vim.o.ignorecase = true -- See NOTES_OPTIONS_IGNORECASE
@@ -32,24 +33,26 @@ vim.o.timeoutlen = 300 -- See NOTES_OPTIONS_TIMEOUTLEN
 vim.o.splitright = true -- See NOTES_OPTIONS_SPLITRIGHT
 vim.o.splitbelow = true -- See NOTES_OPTIONS_SPLITBELOW
 vim.o.list = true -- See NOTES_OPTIONS_LIST
-vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" } -- See NOTES_OPTIONS_LISTCHARS
 vim.o.inccommand = "split" -- See NOTES_OPTIONS_INCCOMMAND
 vim.o.cursorline = true -- See NOTES_OPTIONS_CURSORLINE
 vim.o.cursorcolumn = true -- See NOTES_OPTIONS_CURSORCOLUMN
 vim.o.scrolloff = 10 -- See NOTES_OPTIONS_SCROLLOFF
 vim.o.confirm = true -- See NOTES_OPTIONS_CONFIRM
 
+vim.schedule(function()
+    vim.o.clipboard = "unnamedplus"
+end) -- See NOTES_OPTIONS_CLIPBOARD
+
+vim.opt.listchars = {
+    tab = "» ",
+    trail = "·",
+    nbsp = "␣",
+} -- See NOTES_OPTIONS_LISTCHARS
+
 -- =================================================================================================
 -- NVIM_KEYMAPS
 -- =================================================================================================
--- See `:help vim.keymap.set()`
--- Clear highlights on search when pressing <Esc> in normal mode
--- See `:help hlsearch`
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
-
--- Keybinds to make split navigation easier.
--- Use CTRL+<hjkl> to switch between windows
--- See `:help wincmd` for a list of all window commands
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
@@ -80,48 +83,21 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- =================================================================================================
--- PLUGINS
--- =================================================================================================
-local plugin_cfg = {
-    -- Stores all plugins configuration
-}
+-- Lazy plugins table and helper function
+local lazy_plugins = {}
+local function add_lazy(config)
+    table.insert(lazy_plugins, config)
+end
 
-local cfg_guess_indent_nvim = {
-    -- To run setup automatically, use `opts = {}`
+-- =================================================================================================
+-- NVIM_PLUGINS
+-- =================================================================================================
+add_lazy({
     "NMAC427/guess-indent.nvim",
-    opts = {},
-}
-vim.list_extend(plugin_cfg, cfg_guess_indent_nvim)
+})
 
-local cfg_gitsigns_nvim = {
-    -- Alternatively, use `config = function() ... end` for full control over the configuration.
-    -- If you prefer to call `setup` explicitly, use:
-    "lewis6991/gitsigns.nvim",
-    config = function()
-        require("gitsigns").setup({
-            -- Your gitsigns configuration here
-        })
-    end,
-}
-vim.list_extend(plugin_cfg, cfg_gitsigns_nvim)
-
-local cfg_which_key_nvim = {
-    -- Plugins can also be configured to run Lua code when they are loaded.
-    --
-    -- This is often very useful to both group configuration, as well as handle
-    -- lazy loading plugins that don't need to be loaded immediately at startup.
-    --
-    -- For example, in the following configuration, we use:
-    -- event = 'VimEnter'
-    --
-    -- which loads which-key before all the UI elements are loaded. Events can be
-    -- normal autocommands events (`:help autocmd-events`).
-    --
-    -- Then, because we use the `opts` key (recommended), the configuration runs
-    -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
-
-    -- Useful plugin to show you pending keybinds.
+-- Useful plugin to show you pending keybinds.
+add_lazy({
     "folke/which-key.nvim",
     event = "VimEnter",
     opts = {
@@ -137,8 +113,7 @@ local cfg_which_key_nvim = {
             { "gr", group = "LSP Actions", mode = { "n" } },
         },
     },
-}
-vim.list_extend(plugin_cfg, cfg_which_key_nvim)
+})
 
 --
 -- -- Diagnostic Config & Keymaps
@@ -960,7 +935,11 @@ vim.list_extend(plugin_cfg, cfg_which_key_nvim)
 --         },
 --     },
 -- })
---
+
+-- =================================================================================================
+-- NVIM_LAZY_SETUP
+-- =================================================================================================
+require("lazy").setup(lazy_plugins)
 
 -- =================================================================================================
 -- MY_NOTES
