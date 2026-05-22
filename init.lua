@@ -83,7 +83,9 @@ vim.opt.formatoptions:append("mB")
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 vim.opt.path:append("**")
 vim.opt.sessionoptions:append({ "tabpages", "globals" })
-vim.schedule(function() vim.o.clipboard = "unnamedplus" end)
+vim.schedule(function()
+    vim.o.clipboard = "unnamedplus"
+end)
 
 if vim.fn.has("gui_running") == 1 or vim.g.neovide then
     if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
@@ -109,8 +111,7 @@ if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
     if vim.fn.executable("pwsh") == 1 or vim.fn.executable("powershell") == 1 then
         local pwsh = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell"
         vim.o.shell = pwsh
-        vim.o.shellcmdflag =
-            "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command "
+        vim.o.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command "
             .. "[Console]::InputEncoding=[Console]::OutputEncoding"
             .. "=[System.Text.Encoding]::UTF8;"
         vim.o.shellquote = ""
@@ -138,7 +139,7 @@ vim.diagnostic.config({
     float = { border = "rounded", source = "if_many" },
     underline = { severity = { min = vim.diagnostic.severity.WARN } },
     -- Can switch between these as you prefer
-    virtual_text = true,   -- Text shows up at the end of the line
+    virtual_text = true, -- Text shows up at the end of the line
     virtual_lines = false, -- Text shows up underneath the line, with virtual lines
 })
 
@@ -158,15 +159,26 @@ vim.keymap.set("n", "<leader>vimrk", function()
     local path = vim.fn.stdpath("data") .. "/lazy/rookie_toys.nvim/plugin/rookie_toys.lua"
     vim.cmd("vs " .. path)
 end, { desc = "Open rookie_toys.lua" })
-vim.keymap.set("n", "<leader>vim", ":vs $MYVIMRC<CR>", { silent = true, desc = "Open init.lua in split" })
+vim.keymap.set(
+    "n",
+    "<leader>vim",
+    ":vs $MYVIMRC<CR>",
+    { silent = true, desc = "Open init.lua in split" }
+)
 
 -- Navigation & Search
-vim.keymap.set("n", "*", "*zz",
-    { desc = (vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1) and "Windows refine search" or "macOS refine search" })
+vim.keymap.set("n", "*", "*zz", {
+    desc = (vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1) and "Windows refine search"
+        or "macOS refine search",
+})
 vim.keymap.set("n", "j", "gj", { desc = "Move down (display line)" })
 vim.keymap.set("n", "k", "gk", { desc = "Move up (display line)" })
-vim.keymap.set("n", "<F2>", ":%s/\\C\\<<C-r><C-w>\\>/<C-r><C-w>/g<Left><Left>",
-    { desc = "Search and replace word under cursor" })
+vim.keymap.set(
+    "n",
+    "<F2>",
+    ":%s/\\C\\<<C-r><C-w>\\>/<C-r><C-w>/g<Left><Left>",
+    { desc = "Search and replace word under cursor" }
+)
 
 -- Line movement
 vim.keymap.set("n", "<M-Down>", ":m .+1<CR>==", { desc = "Move line down" })
@@ -175,8 +187,18 @@ vim.keymap.set("n", "<M-j>", ":m .+1<CR>==", { silent = true, desc = "Move line 
 vim.keymap.set("n", "<M-k>", ":m .-2<CR>==", { silent = true, desc = "Move line up" })
 
 -- Window & Tab management
-vim.keymap.set("n", "+", ":vertical resize +2<CR>", { silent = true, desc = "Increase window width" })
-vim.keymap.set("n", "_", ":vertical resize -2<CR>", { silent = true, desc = "Decrease window width" })
+vim.keymap.set(
+    "n",
+    "+",
+    ":vertical resize +2<CR>",
+    { silent = true, desc = "Increase window width" }
+)
+vim.keymap.set(
+    "n",
+    "_",
+    ":vertical resize -2<CR>",
+    { silent = true, desc = "Decrease window width" }
+)
 vim.keymap.set("n", "<C-M-PageDown>", ":tabmove +1<CR>", { silent = true, desc = "Move tab right" })
 vim.keymap.set("n", "<C-M-PageUp>", ":tabmove -1<CR>", { silent = true, desc = "Move tab left" })
 vim.keymap.set("n", "<C-S-Tab>", "gT", { silent = true, desc = "Previous tab" })
@@ -194,10 +216,19 @@ vim.keymap.set("n", "<F8>", ":copen<CR>", { silent = true, desc = "Open quickfix
 vim.keymap.set("n", "<F9>", ":cprevious<CR>", { silent = true, desc = "Previous quickfix item" })
 
 -- Utilities
-vim.keymap.set("n", "<leader>clr", ":%bd<bar>e #<bar>normal `<CR>",
-    { silent = true, desc = "Clear all buffers but current" })
+vim.keymap.set(
+    "n",
+    "<leader>clr",
+    ":%bd<bar>e #<bar>normal `<CR>",
+    { silent = true, desc = "Clear all buffers but current" }
+)
 vim.keymap.set("n", "<leader>lh", ":noh<CR>", { silent = true, desc = "Clear highlights" })
-vim.keymap.set("n", "<leader>tm", "<cmd>vs|term<CR>", { silent = true, desc = "Open terminal in split" })
+vim.keymap.set(
+    "n",
+    "<leader>tm",
+    "<cmd>vs|term<CR>",
+    { silent = true, desc = "Open terminal in split" }
+)
 vim.keymap.set("n", "K", "i<CR><Esc>", { desc = "Insert newline at cursor" })
 vim.keymap.set("n", "O", "O<Space><BS><Esc>", { desc = "Insert empty line above" })
 vim.keymap.set("n", "o", "o<Space><BS><Esc>", { desc = "Insert empty line below" })
@@ -246,7 +277,12 @@ vim.keymap.set("t", "kj", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
 vim.keymap.set("t", "<S-Enter>", [[<C-v><Enter>]], { buffer = true, desc = "Send Enter" })
 
 -- Diagnostic keymaps
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+vim.keymap.set(
+    "n",
+    "<leader>q",
+    vim.diagnostic.setloclist,
+    { desc = "Open diagnostic [Q]uickfix list" }
+)
 
 -- Exit terminal mode with double Esc
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
@@ -339,6 +375,15 @@ end
 -- NVIM_PLUGINS
 -- =================================================================================================
 add_lazy({
+    "modulomedito/rookie_git.nvim",
+    dependencies = {
+        "sindrets/diffview.nvim",
+        "lewis6991/gitsigns.nvim",
+        "isakbm/gitgraph.nvim",
+    },
+})
+
+add_lazy({
     "NMAC427/guess-indent.nvim",
 })
 
@@ -357,7 +402,7 @@ add_lazy({
             end,
         },
         { "nvim-telescope/telescope-ui-select.nvim" },
-        { "nvim-tree/nvim-web-devicons",            enabled = vim.g.have_nerd_font },
+        { "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
     },
     config = function()
         require("telescope").setup({
@@ -374,11 +419,21 @@ add_lazy({
         vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
         vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
         vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
-        vim.keymap.set({ "n", "v" }, "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
+        vim.keymap.set(
+            { "n", "v" },
+            "<leader>sw",
+            builtin.grep_string,
+            { desc = "[S]earch current [W]ord" }
+        )
         vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
         vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
         vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
-        vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+        vim.keymap.set(
+            "n",
+            "<leader>s.",
+            builtin.oldfiles,
+            { desc = '[S]earch Recent Files ("." for repeat)' }
+        )
         vim.keymap.set("n", "<leader>sc", builtin.commands, { desc = "[S]earch [C]ommands" })
         vim.keymap.set("n", "<leader>b", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
@@ -386,15 +441,42 @@ add_lazy({
             group = vim.api.nvim_create_augroup("telescope-lsp-attach", { clear = true }),
             callback = function(event)
                 local buf = event.buf
-                vim.keymap.set("n", "grr", builtin.lsp_references, { buffer = buf, desc = "[G]oto [R]eferences" })
-                vim.keymap.set("n", "gri", builtin.lsp_implementations,
-                    { buffer = buf, desc = "[G]oto [I]mplementation" })
-                vim.keymap.set("n", "grd", builtin.lsp_definitions, { buffer = buf, desc = "[G]oto [D]efinition" })
-                vim.keymap.set("n", "gO", builtin.lsp_document_symbols, { buffer = buf, desc = "Open Document Symbols" })
-                vim.keymap.set("n", "gW", builtin.lsp_dynamic_workspace_symbols,
-                    { buffer = buf, desc = "Open Workspace Symbols" })
-                vim.keymap.set("n", "grt", builtin.lsp_type_definitions,
-                    { buffer = buf, desc = "[G]oto [T]ype Definition" })
+                vim.keymap.set(
+                    "n",
+                    "grr",
+                    builtin.lsp_references,
+                    { buffer = buf, desc = "[G]oto [R]eferences" }
+                )
+                vim.keymap.set(
+                    "n",
+                    "gri",
+                    builtin.lsp_implementations,
+                    { buffer = buf, desc = "[G]oto [I]mplementation" }
+                )
+                vim.keymap.set(
+                    "n",
+                    "grd",
+                    builtin.lsp_definitions,
+                    { buffer = buf, desc = "[G]oto [D]efinition" }
+                )
+                vim.keymap.set(
+                    "n",
+                    "gO",
+                    builtin.lsp_document_symbols,
+                    { buffer = buf, desc = "Open Document Symbols" }
+                )
+                vim.keymap.set(
+                    "n",
+                    "gW",
+                    builtin.lsp_dynamic_workspace_symbols,
+                    { buffer = buf, desc = "Open Workspace Symbols" }
+                )
+                vim.keymap.set(
+                    "n",
+                    "grt",
+                    builtin.lsp_type_definitions,
+                    { buffer = buf, desc = "[G]oto [T]ype Definition" }
+                )
             end,
         })
 
@@ -425,7 +507,7 @@ add_lazy({
         { "mason-org/mason.nvim", opts = {} },
         "mason-org/mason-lspconfig.nvim",
         "WhoIsSethDaniel/mason-tool-installer.nvim",
-        { "j-hui/fidget.nvim",    opts = {} },
+        { "j-hui/fidget.nvim", opts = {} },
     },
     config = function()
         vim.api.nvim_create_autocmd("LspAttach", {
@@ -441,8 +523,11 @@ add_lazy({
                 map("grD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
                 local client = vim.lsp.get_client_by_id(event.data.client_id)
-                if client and client:supports_method("textDocument/documentHighlight", event.buf) then
-                    local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+                if
+                    client and client:supports_method("textDocument/documentHighlight", event.buf)
+                then
+                    local highlight_augroup =
+                        vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
                     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
                         buffer = event.buf,
                         group = highlight_augroup,
@@ -456,7 +541,10 @@ add_lazy({
                     })
 
                     vim.api.nvim_create_autocmd("LspDetach", {
-                        group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+                        group = vim.api.nvim_create_augroup(
+                            "kickstart-lsp-detach",
+                            { clear = true }
+                        ),
                         callback = function(event2)
                             vim.lsp.buf.clear_references()
                             vim.api.nvim_clear_autocmds({
@@ -469,7 +557,9 @@ add_lazy({
 
                 if client and client:supports_method("textDocument/inlayHint", event.buf) then
                     map("<leader>th", function()
-                        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+                        vim.lsp.inlay_hint.enable(
+                            not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf })
+                        )
                     end, "[T]oggle Inlay [H]ints")
                 end
             end,
@@ -481,20 +571,34 @@ add_lazy({
                 on_init = function(client)
                     if client.workspace_folders then
                         local path = client.workspace_folders[1].name
-                        if path ~= vim.fn.stdpath("config") and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc")) then
+                        if
+                            path ~= vim.fn.stdpath("config")
+                            and (
+                                vim.uv.fs_stat(path .. "/.luarc.json")
+                                or vim.uv.fs_stat(path .. "/.luarc.jsonc")
+                            )
+                        then
                             return
                         end
                     end
-                    client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
-                        runtime = { version = "LuaJIT", path = { "lua/?.lua", "lua/?/init.lua" } },
-                        workspace = {
-                            checkThirdParty = false,
-                            library = vim.tbl_extend("force", vim.api.nvim_get_runtime_file("", true), {
-                                "${3rd}/luv/library",
-                                "${3rd}/busted/library",
-                            }),
-                        },
-                    })
+                    client.config.settings.Lua =
+                        vim.tbl_deep_extend("force", client.config.settings.Lua, {
+                            runtime = {
+                                version = "LuaJIT",
+                                path = { "lua/?.lua", "lua/?/init.lua" },
+                            },
+                            workspace = {
+                                checkThirdParty = false,
+                                library = vim.tbl_extend(
+                                    "force",
+                                    vim.api.nvim_get_runtime_file("", true),
+                                    {
+                                        "${3rd}/luv/library",
+                                        "${3rd}/busted/library",
+                                    }
+                                ),
+                            },
+                        })
                 end,
                 settings = { Lua = {} },
             },
@@ -673,11 +777,11 @@ add_lazy({
         icons = { mappings = vim.g.have_nerd_font },
         -- Document existing key chains
         spec = {
-            { "<leader>s", group = "[S]earch",    mode = { "n", "v" } },
+            { "<leader>s", group = "[S]earch", mode = { "n", "v" } },
             { "<leader>t", group = "[T]oggle" },
             -- Enable gitsigns recommended keymaps first
-            { "<leader>h", group = "Git [H]unk",  mode = { "n", "v" } },
-            { "gr",        group = "LSP Actions", mode = { "n" } },
+            { "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
+            { "gr", group = "LSP Actions", mode = { "n" } },
         },
     },
 })
