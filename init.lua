@@ -83,7 +83,6 @@ vim.opt.formatoptions:append("mB")
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 vim.opt.path:append("**")
 vim.opt.sessionoptions:append({ "tabpages", "globals" })
-NS
 vim.schedule(function() vim.o.clipboard = "unnamedplus" end)
 
 if vim.fn.has("gui_running") == 1 or vim.g.neovide then
