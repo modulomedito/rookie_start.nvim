@@ -903,25 +903,63 @@ add_lazy({
         end,
         mode = "",
         desc = "[F]ormat buffer"
+    }, {
+        "<M-S-f>",
+        function()
+            require("conform").format({
+                lsp_fallback = true,
+                async = false,
+                timeout_ms = 500
+            })
+            vim.api.nvim_input("<Esc>")
+        end,
+        mode = {"n", "v"},
+        desc = "Format file or range (conform)"
+    }, {
+        "<C-s>",
+        function()
+            vim.cmd("normal! m6")
+            vim.cmd("%s/\\s\\+$//e")
+            if vim.bo.filetype == "markdown" then
+                vim.cmd("PanguAll")
+            end
+            local ok, conform = pcall(require, "conform")
+            if ok then
+                conform.format({
+                    lsp_fallback = true,
+                    async = false
+                })
+            else
+                vim.lsp.buf.format()
+            end
+            vim.cmd("w")
+            vim.cmd("normal! `6zz")
+            vim.cmd("noh")
+        end,
+        mode = "n",
+        desc = "Format and save (conform)"
     }},
     opts = {
         notify_on_error = false,
-        format_on_save = function(bufnr)
-            local disable_filetypes = {
-                c = true,
-                cpp = true
-            }
-            if disable_filetypes[vim.bo[bufnr].filetype] then
-                return nil
-            else
-                return {
-                    timeout_ms = 500,
-                    lsp_format = "fallback"
-                }
-            end
-        end,
+        format_on_save = false,
         formatters_by_ft = {
-            lua = {"stylua"}
+            lua = {"stylua"},
+            c = {
+                "clang-format",
+                "uncrustify",
+                stop_after_first = true
+            },
+            cpp = {
+                "clang-format",
+                "uncrustify",
+                stop_after_first = true
+            },
+            markdown = {
+                "prettier",
+                "markdownlint",
+                stop_after_first = true
+            },
+            python = {"autopep8", "black", "isort"}
         }
     }
 })
