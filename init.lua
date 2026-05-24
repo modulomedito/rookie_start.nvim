@@ -161,6 +161,9 @@ vim.diagnostic.config({
 -- NVIM_KEYMAPS
 -- =================================================================================================
 -- Basic mappings
+vim.keymap.set("i", "kj", "<Esc>", {
+    desc = "Exit insert mode"
+})
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", {
     desc = "Clear search highlights"
 })
