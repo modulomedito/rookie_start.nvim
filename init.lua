@@ -647,6 +647,13 @@ add_lazy({
 })
 
 add_lazy({
+    "modulomedito/rookie_ai.nvim",
+    config = function()
+        require("rookie_ai").setup()
+    end
+})
+
+add_lazy({
     "sphamba/smear-cursor.nvim",
     config = function()
         if not vim.g.neovide then
