@@ -508,7 +508,7 @@ add_lazy({
 })
 
 add_lazy({
-    "modulomedito/rookie_enhance_nvimtree",
+    "modulomedito/rookie_enhance_nvimtree.nvim",
     dependencies = { "nvim-tree/nvim-tree.lua" },
     config = function()
         require("rookie_enhance_nvimtree").setup()
