@@ -657,7 +657,7 @@ add_lazy({
     "sphamba/smear-cursor.nvim",
     config = function()
         if not vim.g.neovide then
-            require("smear-cursor").setup()
+            require("smear_cursor").setup()
         end
     end
 })
