@@ -519,6 +519,13 @@ add_lazy({
     end
 })
 
+add_lazy({
+    "modulomedito/rookie_c.nvim",
+    config = function()
+        require("rookie_c").setup()
+    end
+})
+
 add_lazy({"NMAC427/guess-indent.nvim"})
 
 -- Fuzzy Finder (files, lsp, etc)
