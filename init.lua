@@ -639,6 +639,22 @@ add_lazy({
     end
 })
 
+add_lazy({
+    "modulomedito/rookie_aes.nvim",
+    config = function()
+        require("rookie_aes").setup()
+    end
+})
+
+add_lazy({
+    "sphamba/smear-cursor.nvim",
+    config = function()
+        if not vim.g.neovide then
+            require("smear-cursor").setup()
+        end
+    end
+})
+
 add_lazy({"NMAC427/guess-indent.nvim"})
 
 -- Fuzzy Finder (files, lsp, etc)
