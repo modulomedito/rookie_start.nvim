@@ -702,6 +702,13 @@ add_lazy({
 })
 
 add_lazy({
+    "modulomedito/rookie_tag.nvim",
+    config = function()
+        require("rookie_tag").setup()
+    end,
+})
+
+add_lazy({
     "modulomedito/rookie_lsp.nvim",
     dependencies = {
         "neovim/nvim-lspconfig",
