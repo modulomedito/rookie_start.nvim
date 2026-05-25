@@ -103,12 +103,14 @@ if vim.fn.has("gui_running") == 1 or vim.g.neovide then
     else
         vim.o.guifont = "Agave Nerd Font:h16"
     end
-    vim.opt.guioptions:append("k")
-    vim.opt.guioptions:remove("L")
-    vim.opt.guioptions:remove("T")
-    vim.opt.guioptions:remove("e")
-    vim.opt.guioptions:remove("m")
-    vim.opt.guioptions:remove("r")
+    if vim.fn.exists("+guioptions") == 1 then
+        vim.opt.guioptions:append("k")
+        vim.opt.guioptions:remove("L")
+        vim.opt.guioptions:remove("T")
+        vim.opt.guioptions:remove("e")
+        vim.opt.guioptions:remove("m")
+        vim.opt.guioptions:remove("r")
+    end
     vim.o.columns = 107
     vim.o.lines = 25
 end
