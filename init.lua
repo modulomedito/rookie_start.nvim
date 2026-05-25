@@ -3,6 +3,7 @@
 -- =================================================================================================
 local secret_path = vim.fn.stdpath("config") .. "/lua/secret.lua"
 if vim.fn.filereadable(secret_path) == 0 then
+    vim.fn.mkdir(vim.fn.stdpath("config") .. "/lua", "p")
     vim.fn.writefile({"-- Your secret configurations here"}, secret_path)
 end
 require("secret")
