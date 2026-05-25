@@ -732,6 +732,9 @@ add_lazy({ "fedorenchik/VimCalc3" })
 
 add_lazy({ "tpope/vim-surround" })
 
+-- Show vim marks
+add_lazy({ "kshenoy/vim-signature" })
+
 -- Fuzzy Finder (files, lsp, etc)
 add_lazy({
     "nvim-telescope/telescope.nvim",
