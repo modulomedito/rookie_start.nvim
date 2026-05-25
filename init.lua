@@ -695,6 +695,13 @@ add_lazy({
 })
 
 add_lazy({
+    "modulomedito/rookie_textmanip.nvim",
+    config = function()
+        require("rookie_textmanip").setup()
+    end,
+})
+
+add_lazy({
     "modulomedito/rookie_lsp.nvim",
     dependencies = {
         "neovim/nvim-lspconfig",
