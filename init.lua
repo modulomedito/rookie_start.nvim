@@ -194,10 +194,6 @@ if not has_telescope then
     vim.keymap.set("n", "<C-p>", ":find *", {
         desc = "Find files (fallback)",
     })
-else
-    vim.keymap.set("n", "<C-p>", require("telescope.builtin").find_files, {
-        desc = "[S]earch [F]iles",
-    })
 end
 
 vim.keymap.set("n", "*", "*zz", {
@@ -730,6 +726,9 @@ add_lazy({
             desc = "[S]earch [K]eymaps",
         })
         vim.keymap.set("n", "<leader>sf", builtin.find_files, {
+            desc = "[S]earch [F]iles",
+        })
+        vim.keymap.set("n", "<C-p>", builtin.find_files, {
             desc = "[S]earch [F]iles",
         })
         vim.keymap.set("n", "<leader>ss", builtin.builtin, {
