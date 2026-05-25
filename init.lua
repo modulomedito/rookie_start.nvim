@@ -189,6 +189,13 @@ vim.keymap.set("n", "<leader>vim", ":vs $MYVIMRC<CR>", {
 })
 
 -- Navigation & Search
+local has_telescope, _ = pcall(require, "telescope")
+if not has_telescope then
+    vim.keymap.set("n", "<C-p>", ":find *", {
+        desc = "Find files (fallback)"
+    })
+end
+
 vim.keymap.set("n", "*", "*zz", {
     desc = (vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1) and "Windows refine search" or "macOS refine search"
 })
