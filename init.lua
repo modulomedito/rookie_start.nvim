@@ -725,6 +725,11 @@ add_lazy({ "NMAC427/guess-indent.nvim" })
 
 add_lazy({ "hotoo/pangu.vim" })
 
+-- Highlight words/patterns
+add_lazy({ "azabiong/vim-highlighter" })
+
+add_lazy({ "fedorenchik/VimCalc3" })
+
 -- Fuzzy Finder (files, lsp, etc)
 add_lazy({
     "nvim-telescope/telescope.nvim",
