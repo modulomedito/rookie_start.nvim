@@ -730,6 +730,8 @@ add_lazy({ "azabiong/vim-highlighter" })
 
 add_lazy({ "fedorenchik/VimCalc3" })
 
+add_lazy({ "tpope/vim-surround" })
+
 -- Fuzzy Finder (files, lsp, etc)
 add_lazy({
     "nvim-telescope/telescope.nvim",
