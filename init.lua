@@ -574,6 +574,23 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+-- Auto-update buffers when files change externally
+local auto_update_group = vim.api.nvim_create_augroup("AutoUpdate", {
+    clear = true,
+})
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+    group = auto_update_group,
+    command = "checktime",
+})
+
+vim.api.nvim_create_autocmd("FileChangedShellPost", {
+    group = auto_update_group,
+    callback = function()
+        vim.notify("Buffer updated from disk.", vim.log.levels.INFO)
+    end,
+})
+
 local group_help = vim.api.nvim_create_augroup("RkHelp", {
     clear = true,
 })
