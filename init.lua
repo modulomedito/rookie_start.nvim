@@ -1,6 +1,7 @@
 -- =================================================================================================
 -- YOUR_SECRET
 -- =================================================================================================
+vim.opt.rtp:prepend(vim.fn.stdpath("config"))
 local secret_path = vim.fn.stdpath("config") .. "/lua/secret.lua"
 if vim.fn.filereadable(secret_path) == 0 then
     vim.fn.mkdir(vim.fn.stdpath("config") .. "/lua", "p")
