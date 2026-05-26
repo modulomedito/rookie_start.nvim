@@ -888,7 +888,7 @@ add_lazy({
     cmd = { "ConformInfo" },
     keys = {
         {
-            "<leader>f",
+            "<leader>fo",
             function()
                 require("conform").format({
                     async = true,
@@ -919,15 +919,15 @@ add_lazy({
                 if vim.bo.filetype == "markdown" then
                     vim.cmd("PanguAll")
                 end
-                local ok, conform = pcall(require, "conform")
-                if ok then
-                    conform.format({
-                        lsp_fallback = true,
-                        async = false,
-                    })
-                else
-                    vim.lsp.buf.format()
-                end
+                -- local ok, conform = pcall(require, "conform")
+                -- if ok then
+                --     conform.format({
+                --         lsp_fallback = true,
+                --         async = false,
+                --     })
+                -- else
+                --     vim.lsp.buf.format()
+                -- end
                 vim.cmd("w")
                 vim.cmd("normal! `6zz")
                 vim.cmd("noh")
