@@ -716,6 +716,16 @@ add_lazy({
 })
 
 add_lazy({
+    "modulomedito/rookie_enhance_telescope.nvim",
+    dependencies = {
+        "nvim-telescope/telescope.nvim",
+    },
+    config = function()
+        require("rookie_enhance_telescope").setup()
+    end,
+})
+
+add_lazy({
     "modulomedito/rookie_lsp.nvim",
     dependencies = {
         "neovim/nvim-lspconfig",
@@ -732,6 +742,13 @@ add_lazy({
     },
     config = function()
         require("rookie_lsp").setup()
+    end,
+})
+
+add_lazy({
+    "stevearc/oil.nvim",
+    config = function()
+        require("oil").setup()
     end,
 })
 
