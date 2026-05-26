@@ -681,9 +681,9 @@ add_lazy({
 })
 
 add_lazy({
-    "modulomedito/rookie_aes.nvim",
+    "modulomedito/rookie_ssl.nvim",
     config = function()
-        require("rookie_aes").setup()
+        require("rookie_ssl").setup()
     end,
 })
 
@@ -744,6 +744,7 @@ add_lazy({ "hotoo/pangu.vim" })
 -- Highlight words/patterns
 add_lazy({ "azabiong/vim-highlighter" })
 
+-- Calculator
 add_lazy({ "fedorenchik/VimCalc3" })
 
 add_lazy({ "tpope/vim-surround" })
