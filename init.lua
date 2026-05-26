@@ -716,6 +716,13 @@ add_lazy({
 })
 
 add_lazy({
+    "modulomedito/rookie_gitlab.nvim",
+    config = function()
+        require("rookie_gitlab").setup()
+    end,
+})
+
+add_lazy({
     "modulomedito/rookie_enhance_telescope.nvim",
     dependencies = {
         "nvim-telescope/telescope.nvim",
