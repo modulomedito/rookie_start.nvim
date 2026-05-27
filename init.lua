@@ -643,7 +643,7 @@ add_lazy({
     dependencies = {
         "sindrets/diffview.nvim",
         "lewis6991/gitsigns.nvim",
-        "isakbm/gitgraph.nvim",
+        "modulomedito/gitgraph.nvim",
         "tpope/vim-fugitive",
     },
     config = function()
