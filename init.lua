@@ -752,29 +752,6 @@ add_lazy({
     end,
 })
 
-add_lazy({
-    "stevearc/oil.nvim",
-    config = function()
-        require("oil").setup()
-    end,
-})
-
-add_lazy({
-    "MagicDuck/grug-far.nvim",
-    config = function()
-        require("grug-far").setup()
-    end,
-})
-
-add_lazy({
-    "sphamba/smear-cursor.nvim",
-    config = function()
-        if not vim.g.neovide then
-            require("smear_cursor").setup()
-        end
-    end,
-})
-
 add_lazy({ "NMAC427/guess-indent.nvim" })
 
 add_lazy({ "hotoo/pangu.vim" })
@@ -789,6 +766,74 @@ add_lazy({ "tpope/vim-surround" })
 
 -- Show vim marks
 add_lazy({ "kshenoy/vim-signature" })
+
+add_lazy({
+    "stevearc/oil.nvim",
+    config = function()
+        require("oil").setup()
+    end,
+})
+
+add_lazy({
+    "sphamba/smear-cursor.nvim",
+    config = function()
+        if not vim.g.neovide then
+            require("smear_cursor").setup()
+        end
+    end,
+})
+
+add_lazy({
+    "MagicDuck/grug-far.nvim",
+    config = function()
+        local function get_visual_selection()
+            local saved_reg = vim.fn.getreg("v")
+            vim.cmd('noau normal! "vy')
+            local text = vim.fn.getreg("v")
+            vim.fn.setreg("v", saved_reg)
+            text = text:gsub("\n", "")
+            return text
+        end
+
+        local function open_grugfar(opts)
+            local ok, grugfar = pcall(require, "grug-far")
+            if not ok then
+                vim.notify("grug-far is not installed", vim.log.levels.WARN)
+                return
+            end
+
+            local base = {
+                startInInsertMode = false,
+                prefills = {
+                    paths = vim.fn.getcwd(),
+                },
+            }
+            local final_opts = vim.tbl_deep_extend("force", base, opts or {})
+            grugfar.open(final_opts)
+        end
+
+        vim.keymap.set("n", "<leader><F2>", function()
+            local search_text = vim.fn.expand("<cword>")
+            open_grugfar({ prefills = { search = search_text } })
+        end, { desc = "Rookie Global Replace (grug-far)" })
+
+        vim.keymap.set("v", "<leader><F2>", function()
+            local text = get_visual_selection()
+            open_grugfar({ prefills = { search = text } })
+        end, { desc = "Global Replace Selection (Rookie Toys, grug-far)" })
+
+        vim.keymap.set("n", "<leader><leader><F2>", function()
+            if vim.fn.exists(":RkGlobalReplaceUndo") == 2 then
+                vim.cmd("RkGlobalReplaceUndo")
+                return
+            end
+            vim.notify(
+                "Global replace undo is only available in Telescope flow",
+                vim.log.levels.INFO
+            )
+        end, { desc = "Rookie Global Replace Undo" })
+    end,
+})
 
 -- Fuzzy Finder (files, lsp, etc)
 add_lazy({
