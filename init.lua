@@ -760,6 +760,13 @@ add_lazy({
 })
 
 add_lazy({
+    "MagicDuck/grug-far.nvim",
+    config = function()
+        require("grug-far").setup()
+    end,
+})
+
+add_lazy({
     "sphamba/smear-cursor.nvim",
     config = function()
         if not vim.g.neovide then
