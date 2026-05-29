@@ -997,21 +997,27 @@ add_lazy({
         {
             "<C-s>",
             function()
+                -- Save cursor position
                 vim.cmd("normal! m6")
+                -- Remove trailing whitespaces
                 vim.cmd("%s/\\s\\+$//e")
+                -- Markdown special formatting
                 if vim.bo.filetype == "markdown" then
                     vim.cmd("PanguAll")
                 end
-                -- local ok, conform = pcall(require, "conform")
-                -- if ok then
-                --     conform.format({
-                --         lsp_fallback = true,
-                --         async = false,
-                --     })
-                -- else
-                --     vim.lsp.buf.format()
-                -- end
+                -- LSP format
+                local ok, conform = pcall(require, "conform")
+                if ok then
+                    conform.format({
+                        lsp_fallback = true,
+                        async = true,
+                    })
+                else
+                    vim.lsp.buf.format()
+                end
+                -- Save file
                 vim.cmd("w")
+                -- Restore cursor position
                 vim.cmd("normal! `6zz")
                 vim.cmd("noh")
             end,
