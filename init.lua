@@ -1010,7 +1010,7 @@ add_lazy({
                 if ok then
                     conform.format({
                         lsp_fallback = true,
-                        async = true,
+                        async = false,
                     })
                 else
                     vim.lsp.buf.format()
