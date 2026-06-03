@@ -402,6 +402,9 @@ vim.keymap.set("x", "p", "P", {
 vim.keymap.set("t", "kj", [[<C-\><C-n>]], {
     desc = "Exit terminal mode",
 })
+vim.keymap.set("t", "<C-v>", [[<C-\><C-n>pa]], {
+    desc = "Paste and re-enter terminal mode",
+})
 vim.keymap.set("t", "<S-Enter>", [[<C-v><Enter>]], {
     buffer = true,
     desc = "Send Enter",
