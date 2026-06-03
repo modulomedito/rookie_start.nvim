@@ -74,7 +74,7 @@ vim.o.swapfile = false
 vim.o.tabstop = 4
 vim.o.termguicolors = true
 vim.o.textwidth = 100
-vim.o.timeoutlen = 300
+vim.o.timeoutlen = 500
 vim.o.undofile = true
 vim.o.updatetime = 250
 vim.o.wildcharm = vim.fn.char2nr("\t")
@@ -760,7 +760,15 @@ add_lazy({ "NMAC427/guess-indent.nvim" })
 add_lazy({ "hotoo/pangu.vim" })
 
 -- Highlight words/patterns
-add_lazy({ "azabiong/vim-highlighter" })
+add_lazy({
+    "azabiong/vim-highlighter",
+    config = function()
+        vim.keymap.set({ "n", "v" }, "f<Del>", ":<C-u>Hi clear<CR>", {
+            silent = true,
+            desc = "Clear highlighters",
+        })
+    end,
+})
 
 -- Calculator
 add_lazy({ "fedorenchik/VimCalc3" })
