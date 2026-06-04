@@ -516,12 +516,15 @@ vim.api.nvim_create_autocmd("FileType", {
             desc = "GitCommit: PanguAll",
         })
 
-        -- nnoremap <silent><buffer> <C-q> :q<Bar>call timer_start(1000, {-> execute('RkGitGraph')})<CR>
         vim.keymap.set("n", "<C-q>", function()
+            local bufnr = vim.api.nvim_get_current_buf()
+            local should_open_gitgraph = not vim.bo[bufnr].readonly
             vim.cmd("q")
-            vim.defer_fn(function()
-                vim.cmd("RkGitGraph")
-            end, 200)
+            if should_open_gitgraph then
+                vim.defer_fn(function()
+                    vim.cmd("RkGitGraph")
+                end, 200)
+            end
         end, {
             silent = true,
             buffer = true,
