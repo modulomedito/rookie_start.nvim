@@ -273,6 +273,14 @@ vim.keymap.set("n", "<C-w>u", "gT", {
     silent = true,
     desc = "Previous tab",
 })
+vim.keymap.set("n", "<End>", "gt", {
+    silent = true,
+    desc = "Next tab",
+})
+vim.keymap.set("n", "<Home>", "gT", {
+    silent = true,
+    desc = "Previous tab",
+})
 
 -- Quickfix list
 vim.keymap.set("n", "<F10>", ":cnext<CR>", {
