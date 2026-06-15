@@ -282,50 +282,6 @@ vim.keymap.set("n", "<Home>", "gT", {
     desc = "Previous tab",
 })
 
--- Quickfix list
-local function cycle_quickfix(step)
-    local qf = vim.fn.getqflist({ idx = 0, size = 0 })
-
-    if qf.size == 0 then
-        return
-    end
-
-    if step > 0 then
-        if qf.idx >= qf.size then
-            vim.cmd("cfirst")
-        else
-            vim.cmd("cnext")
-        end
-    else
-        if qf.idx <= 1 then
-            vim.cmd("clast")
-        else
-            vim.cmd("cprevious")
-        end
-    end
-end
-
-vim.keymap.set("n", "<F9>", function()
-    cycle_quickfix(-1)
-end, {
-    silent = true,
-    desc = "Previous quickfix item",
-})
-vim.keymap.set("n", "<F10>", function()
-    cycle_quickfix(1)
-end, {
-    silent = true,
-    desc = "Next quickfix item",
-})
-vim.keymap.set("n", "<F11>", ":cclose<CR>", {
-    silent = true,
-    desc = "Close quickfix list",
-})
-vim.keymap.set("n", "<F8>", ":copen<CR>", {
-    silent = true,
-    desc = "Open quickfix list",
-})
-
 -- Utilities
 vim.keymap.set("n", "<leader>clr", ":%bd<bar>e #<bar>normal `<CR>", {
     silent = true,
