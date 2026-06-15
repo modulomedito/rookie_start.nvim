@@ -762,6 +762,13 @@ add_lazy({
     end,
 })
 
+add_lazy({
+    "modulomedito/rookie_rg.nvim",
+    config = function()
+        require("rookie_rg").setup()
+    end,
+})
+
 -- add_lazy({
 --     "modulomedito/rookie_enhance_telescope.nvim",
 --     dependencies = {
