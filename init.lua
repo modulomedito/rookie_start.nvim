@@ -291,10 +291,10 @@ vim.keymap.set("n", "<leader>lh", ":noh<CR>", {
     silent = true,
     desc = "Clear highlights",
 })
-vim.keymap.set("n", "<leader>tm", "<cmd>vs|term<CR>", {
-    silent = true,
-    desc = "Open terminal in split",
-})
+-- vim.keymap.set("n", "<leader>tm", "<cmd>vs|term<CR>", {
+--     silent = true,
+--     desc = "Open terminal in split",
+-- })
 vim.keymap.set("n", "K", "i<CR><Esc>", {
     desc = "Insert newline at cursor",
 })
