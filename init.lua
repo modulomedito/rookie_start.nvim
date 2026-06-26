@@ -1039,6 +1039,38 @@ add_lazy({
             mode = "n",
             desc = "Format and save (conform)",
         },
+        {
+            "<C-s>",
+            function()
+                vim.cmd("stopinsert")
+                -- Save cursor position
+                vim.cmd("normal! m6")
+                -- Remove trailing whitespaces
+                vim.cmd("%s/\\s\\+$//e")
+                -- Markdown special formatting
+                if vim.bo.filetype == "markdown" then
+                    vim.cmd("PanguAll")
+                end
+                -- LSP format
+                local ok, conform = pcall(require, "conform")
+                if ok then
+                    conform.format({
+                        lsp_fallback = true,
+                        async = false,
+                    })
+                else
+                    vim.lsp.buf.format()
+                end
+                -- Save file
+                vim.cmd("w")
+                -- Restore cursor position
+                vim.cmd("normal! `6zz")
+                vim.cmd("noh")
+                vim.cmd("startinsert")
+            end,
+            mode = "i",
+            desc = "Format and save (conform), stay in insert mode",
+        },
     },
     opts = {
         notify_on_error = false,
