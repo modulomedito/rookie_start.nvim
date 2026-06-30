@@ -322,7 +322,10 @@ end, {
     desc = "Git sync & log",
 })
 
--- Command mode
+-- Paste
+vim.keymap.set("i", "<C-v>", "<C-r>*", {
+    desc = "Paste from clipboard",
+})
 vim.keymap.set("c", "<C-v>", "<C-r>*", {
     desc = "Paste from clipboard",
 })
