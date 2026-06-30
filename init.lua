@@ -73,7 +73,7 @@ vim.o.splitright = true
 vim.o.swapfile = false
 vim.o.tabstop = 4
 vim.o.termguicolors = true
-vim.o.textwidth = 100
+vim.o.textwidth = 80
 vim.o.timeoutlen = 500
 vim.o.undofile = true
 vim.o.updatetime = 250
@@ -499,7 +499,7 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = "gitcommit",
     callback = function()
         -- setlocal textwidth=100
-        vim.opt_local.textwidth = 100
+        vim.opt_local.textwidth = 80
         vim.cmd("silent! setlocal noundofile")
 
         -- nnoremap <silent><buffer> <leader>f :PanguAll<CR>
@@ -560,7 +560,7 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.expandtab = true
         vim.opt_local.cindent = true -- Explicitly use standard C indentation
         vim.opt_local.indentexpr = "" -- Disable Treesitter's indent engine for C
-        vim.opt_local.textwidth = 100
+        vim.opt_local.textwidth = 80
     end,
 })
 
