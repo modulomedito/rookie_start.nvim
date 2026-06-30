@@ -392,8 +392,6 @@ vim.keymap.set("x", "p", "P", {
 })
 
 -- Terminal mode
-vim.keymap.del("t", "<Esc>") -- Remove Esc mapping in terminal mode
-vim.keymap.del("t", "<Esc><Esc>") -- Remove Esc mapping in terminal mode
 vim.keymap.set("t", "kj", [[<C-\><C-n>]], {
     desc = "Exit terminal mode",
 })
@@ -411,9 +409,9 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {
 })
 
 -- Exit terminal mode with double Esc
-vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", {
-    desc = "Exit terminal mode",
-})
+-- vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", {
+--     desc = "Exit terminal mode",
+-- })
 
 -- =================================================================================================
 -- NVIM_AUTOCMDS
