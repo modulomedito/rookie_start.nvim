@@ -573,6 +573,7 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = "markdown",
     callback = function()
         vim.opt_local.textwidth = 80
+        vim.opt.virtualedit = "all"
     end,
 })
 
@@ -781,7 +782,16 @@ add_lazy({ "fedorenchik/VimCalc3" })
 add_lazy({ "tpope/vim-surround" })
 
 -- Draw ASCII graph
-add_lazy({ "jbyuki/venn.nvim" })
+add_lazy({
+    "jbyuki/venn.nvim",
+    config = function()
+        vim.keymap.set("x", "<CR>", ":VBox<CR>", {
+            silent = true,
+            noremap = true,
+            desc = "Draw a graph",
+        })
+    end,
+})
 
 -- Show vim marks
 add_lazy({ "kshenoy/vim-signature" })
