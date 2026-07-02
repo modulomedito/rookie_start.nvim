@@ -777,7 +777,11 @@ add_lazy({
 -- Calculator
 add_lazy({ "fedorenchik/VimCalc3" })
 
+-- Surround with characters
 add_lazy({ "tpope/vim-surround" })
+
+-- Draw ASCII graph
+add_lazy({ "jbyuki/venn.nvim" })
 
 -- Show vim marks
 add_lazy({ "kshenoy/vim-signature" })
