@@ -1062,13 +1062,14 @@ local function _format_one_paragraph(lines, max_dw)
     end
 
     local first = lines[1]
-    -- Skip code fences, indented code, headings, hr, blockquotes
+    -- Skip code fences, indented code, headings, hr, blockquotes, tables
     if first:match("^```")
         or first:match("^    ")
         or first:match("^#")
         or first:match("^---+$")
         or first:match("^===+$")
-        or first:match("^>%s") then
+        or first:match("^>%s")
+        or first:match("^|") then
         return nil
     end
 
@@ -1200,7 +1201,8 @@ function _G.markdown_format_buffer()
             and not line:match("^#")
             and not line:match("^---+$")
             and not line:match("^===+$")
-            and not line:match("^>%s") then
+            and not line:match("^>%s")
+            and not line:match("^|") then
             local p_start = i
             local p_end = i
             while p_end < total do
