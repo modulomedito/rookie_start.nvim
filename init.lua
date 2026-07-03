@@ -292,6 +292,10 @@ vim.keymap.set("n", "<leader>lh", ":noh<CR>", {
     silent = true,
     desc = "Clear highlights",
 })
+vim.keymap.set("n", "<leader>da", function()
+    local date = os.date("%Y-%m-%d-%w")
+    vim.api.nvim_put({ date }, "c", true, true)
+end, { desc = "Insert current date at cursor" })
 -- vim.keymap.set("n", "<leader>tm", "<cmd>vs|term<CR>", {
 --     silent = true,
 --     desc = "Open terminal in split",
