@@ -1244,8 +1244,9 @@ add_lazy({
         {
             "<C-s>",
             function()
-                -- Save cursor position
+                -- Save cursor position (display column, not byte column)
                 vim.cmd("normal! m6")
+                local saved_vcol = vim.fn.virtcol(".")
                 -- Remove trailing whitespaces
                 vim.cmd("%s/\\s\\+$//e")
                 -- Markdown special formatting
@@ -1265,8 +1266,12 @@ add_lazy({
                 end
                 -- Save file
                 vim.cmd("w")
-                -- Restore cursor position
-                vim.cmd("normal! `6zz")
+                -- Restore cursor: mark for line, virtcol2col for correct display column
+                vim.cmd("normal! `6")
+                local lnum = vim.fn.line(".")
+                local byte_col = vim.fn.virtcol2col(0, lnum, saved_vcol) or 1
+                vim.fn.cursor(lnum, math.max(byte_col, 1))
+                vim.cmd("normal! zz")
                 vim.cmd("noh")
             end,
             mode = "n",
@@ -1275,9 +1280,15 @@ add_lazy({
         {
             "<C-s>",
             function()
-                vim.cmd("stopinsert")
-                -- Save cursor position
+                -- Exit insert mode via feedkeys (process now so formatting runs in normal mode)
+                vim.api.nvim_feedkeys(
+                    vim.api.nvim_replace_termcodes("<Esc>", true, false, true),
+                    "n",
+                    false
+                )
+                -- Save cursor position (display column, not byte column)
                 vim.cmd("normal! m6")
+                local saved_vcol = vim.fn.virtcol(".")
                 -- Remove trailing whitespaces
                 vim.cmd("%s/\\s\\+$//e")
                 -- Markdown special formatting
@@ -1297,10 +1308,14 @@ add_lazy({
                 end
                 -- Save file
                 vim.cmd("w")
-                -- Restore cursor position
-                vim.cmd("normal! `6zz")
+                -- Restore cursor: mark for line, virtcol2col for correct display column
+                vim.cmd("normal! `6")
+                local lnum = vim.fn.line(".")
+                local byte_col = vim.fn.virtcol2col(0, lnum, saved_vcol) or 1
+                vim.fn.cursor(lnum, math.max(byte_col, 1))
+                vim.cmd("normal! zz")
                 vim.cmd("noh")
-                vim.cmd("startinsert")
+                vim.api.nvim_feedkeys("a", "n", false) -- "a" = after cursor, undoes <Esc> left-shift
             end,
             mode = "i",
             desc = "Format and save (conform), stay in insert mode",
