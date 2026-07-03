@@ -316,12 +316,40 @@ vim.keymap.set("n", "go", '"0yi):!start <C-r>0<CR>', {
 -- Git
 vim.keymap.set("n", "<leader>sync", function()
     vim.cmd("wa")
-    vim.cmd("silent !git pull")
-    vim.cmd("silent !git add .")
-    vim.cmd('silent !git commit -m "update by vim"')
-    vim.cmd("silent !git push")
-    vim.cmd("silent !git fetch")
-    vim.cmd("!git log --oneline --graph --all --decorate")
+    local function chain(cmds, on_done)
+        local i = 0
+        local function next_cmd()
+            i = i + 1
+            if i > #cmds then
+                on_done()
+                return
+            end
+            vim.fn.jobstart(cmds[i], {
+                on_exit = function(_, code)
+                    vim.schedule(function()
+                        if code == 0 then
+                            next_cmd()
+                        else
+                            vim.notify(
+                                "Git '" .. cmds[i][2] .. "' failed (exit: " .. code .. ")",
+                                vim.log.levels.ERROR
+                            )
+                        end
+                    end)
+                end,
+            })
+        end
+        next_cmd()
+    end
+    chain({
+        { "git", "pull" },
+        { "git", "add", "." },
+        { "git", "commit", "-m", "update by vim" },
+        { "git", "push" },
+        { "git", "fetch" },
+    }, function()
+        vim.cmd("!git log --oneline --graph --all --decorate")
+    end)
 end, {
     silent = true,
     desc = "Git sync & log",
