@@ -423,6 +423,9 @@ vim.keymap.set("v", "y", "ygv<Esc>", {
 vim.keymap.set("x", "p", "P", {
     desc = "Paste without overwriting register",
 })
+vim.keymap.set("x", "<CR>", "Jgq", {
+    desc = "Built-in format selected lines",
+})
 
 -- Terminal mode
 vim.keymap.set("t", "kj", [[<C-\><C-n>]], {
@@ -605,6 +608,7 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = "markdown",
     callback = function()
         vim.opt_local.textwidth = 80
+        vim.opt_local.formatexpr = "v:lua._markdown_formatexpr()"
     end,
 })
 
@@ -1049,6 +1053,165 @@ add_lazy({
 })
 
 -- Autoformat
+-- Core CJK-aware paragraph wrapper: wraps at 80 display columns.
+-- Takes a list of lines (one paragraph); returns wrapped lines or nil.
+local function _format_one_paragraph(lines, max_dw)
+    max_dw = max_dw or 80
+    if #lines == 0 then
+        return nil
+    end
+
+    local first = lines[1]
+    -- Skip code fences, indented code, headings, hr, blockquotes
+    if first:match("^```")
+        or first:match("^    ")
+        or first:match("^#")
+        or first:match("^---+$")
+        or first:match("^===+$")
+        or first:match("^>%s") then
+        return nil
+    end
+
+    -- Detect list marker and compute continuation indent
+    local prefix, cont_prefix = "", ""
+    local marker = first:match("^(%s*[-*+•]%s+)")
+        or first:match("^(%s*%d+[.)]%s+)")
+    if marker then
+        prefix = marker
+        cont_prefix = string.rep(" ", vim.fn.strdisplaywidth(marker))
+    end
+
+    -- Join all lines, stripping prefix from first line and indent from continuation
+    local parts = {}
+    for i, line in ipairs(lines) do
+        if i == 1 and prefix ~= "" then
+            parts[#parts + 1] = line:sub(#prefix + 1)
+        elseif i > 1 and cont_prefix ~= "" then
+            parts[#parts + 1] = " "
+            parts[#parts + 1] = line:gsub("^%s*", "")
+        else
+            if i > 1 then
+                parts[#parts + 1] = " "
+            end
+            parts[#parts + 1] = line
+        end
+    end
+    local text = table.concat(parts, "")
+
+    -- Wrap by display width (not bytes)
+    local first_avail = max_dw - vim.fn.strdisplaywidth(prefix)
+    local cont_avail = max_dw - vim.fn.strdisplaywidth(cont_prefix)
+
+    local wrapped = {}
+    local cur = ""
+    local cur_dw = 0
+    local cur_max = first_avail
+
+    local char_count = vim.fn.strchars(text)
+    local ci = 1
+    while ci <= char_count do
+        local char = vim.fn.strcharpart(text, ci - 1, 1)
+        local char_dw = vim.fn.strdisplaywidth(char)
+
+        if cur_dw == 0 and char == " " then
+            ci = ci + 1
+        elseif cur_dw + char_dw > cur_max then
+            table.insert(wrapped, cur)
+            cur = ""
+            cur_dw = 0
+            cur_max = cont_avail
+            if char ~= " " then
+                cur = char
+                cur_dw = char_dw
+            end
+            ci = ci + 1
+        else
+            cur = cur .. char
+            cur_dw = cur_dw + char_dw
+            ci = ci + 1
+        end
+    end
+    if cur ~= "" or #wrapped == 0 then
+        table.insert(wrapped, cur)
+    end
+
+    -- Reattach prefixes
+    local result = {}
+    for i, line in ipairs(wrapped) do
+        if i == 1 then
+            result[i] = prefix .. line
+        else
+            result[i] = cont_prefix .. line
+        end
+    end
+
+    return result
+end
+
+-- formatexpr for gqq: formats the current paragraph (called by neovim's gq operator)
+function _G._markdown_formatexpr()
+    local lnum = vim.v.lnum
+    local count = math.max(vim.v.count, 1)
+    local lines = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum - 1 + count, false)
+    return _format_one_paragraph(lines)
+end
+
+-- Format entire markdown buffer paragraph-by-paragraph (for <C-s> mapping).
+-- Processes bottom-to-top so line numbers stay valid across replacements.
+function _G.markdown_format_buffer()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local total = vim.api.nvim_buf_line_count(bufnr)
+
+    -- Detect list markers (unordered and ordered)
+    local function _is_list_marker(s)
+        return s:match("^%s*[-*+•]%s") ~= nil
+            or s:match("^%s*%d+[.)]%s") ~= nil
+    end
+
+    -- Collect paragraph ranges (split on blank lines AND list-item boundaries)
+    local paragraphs = {}
+    local i = 1
+    while i <= total do
+        local line = vim.api.nvim_buf_get_lines(bufnr, i - 1, i, false)[1] or ""
+        if not line:match("^%s*$")
+            and not line:match("^```")
+            and not line:match("^    ")
+            and not line:match("^#")
+            and not line:match("^---+$")
+            and not line:match("^===+$")
+            and not line:match("^>%s") then
+            local p_start = i
+            local p_end = i
+            while p_end < total do
+                p_end = p_end + 1 -- peek at the next line
+                local nl = vim.api.nvim_buf_get_lines(bufnr, p_end - 1, p_end, false)[1] or ""
+                if nl:match("^%s*$") then
+                    p_end = p_end - 1 -- roll back: blank line is not part of paragraph
+                    break
+                end
+                if _is_list_marker(nl) then
+                    p_end = p_end - 1 -- roll back: new list item starts a new paragraph
+                    break
+                end
+            end
+            paragraphs[#paragraphs + 1] = { start = p_start, finish = p_end }
+            i = p_end + 1 -- next line (blank lines are skipped naturally at loop top)
+        else
+            i = i + 1
+        end
+    end
+
+    -- Process bottom-to-top so line numbers don't shift under us
+    for idx = #paragraphs, 1, -1 do
+        local p = paragraphs[idx]
+        local plines = vim.api.nvim_buf_get_lines(bufnr, p.start - 1, p.finish, false)
+        local formatted = _format_one_paragraph(plines)
+        if formatted then
+            vim.api.nvim_buf_set_lines(bufnr, p.start - 1, p.finish, false, formatted)
+        end
+    end
+end
+
 add_lazy({
     "stevearc/conform.nvim",
     event = { "BufWritePre" },
@@ -1088,6 +1251,7 @@ add_lazy({
                 -- Markdown special formatting
                 if vim.bo.filetype == "markdown" then
                     vim.cmd("PanguAll")
+                    vim.cmd("silent! call v:lua.markdown_format_buffer()")
                 end
                 -- LSP format
                 local ok, conform = pcall(require, "conform")
@@ -1119,6 +1283,7 @@ add_lazy({
                 -- Markdown special formatting
                 if vim.bo.filetype == "markdown" then
                     vim.cmd("PanguAll")
+                    vim.cmd("silent! call v:lua.markdown_format_buffer()")
                 end
                 -- LSP format
                 local ok, conform = pcall(require, "conform")
