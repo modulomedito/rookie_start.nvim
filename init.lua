@@ -1098,6 +1098,19 @@ local function _format_one_paragraph(lines, max_dw)
     end
     local text = table.concat(parts, "")
 
+    -- Save links as single-char placeholders (Unicode PUA) to prevent
+    -- the line-wrapper from breaking inside a link URL or label.
+    local PUA_BASE = 0xE000
+    local links = {}
+    local function save_link(m)
+        local idx = #links + 1
+        links[idx] = m
+        return vim.fn.nr2char(PUA_BASE + idx)
+    end
+    text = text:gsub("!?%[.-%]%([^)]*%)", save_link) -- [text](url), ![alt](url)
+    text = text:gsub("%[.-%]%[.-%]", save_link)       -- [text][ref]
+    text = text:gsub("https?://[^%s]+", save_link)    -- bare URLs
+
     -- Wrap by display width (not bytes)
     local first_avail = max_dw - vim.fn.strdisplaywidth(prefix)
     local cont_avail = max_dw - vim.fn.strdisplaywidth(cont_prefix)
@@ -1133,6 +1146,14 @@ local function _format_one_paragraph(lines, max_dw)
     end
     if cur ~= "" or #wrapped == 0 then
         table.insert(wrapped, cur)
+    end
+
+    -- Restore links from placeholders
+    for i = #links, 1, -1 do
+        local placeholder = vim.fn.nr2char(PUA_BASE + i)
+        for j, line in ipairs(wrapped) do
+            wrapped[j] = line:gsub(placeholder, links[i], 1)
+        end
     end
 
     -- Reattach prefixes
