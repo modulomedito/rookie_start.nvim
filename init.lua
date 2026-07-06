@@ -411,6 +411,9 @@ vim.keymap.set("v", "<M-k>", ":m '<-2<CR>gv=gv", {
 vim.keymap.set("v", "<leader>ss", ":sort<CR>", {
     desc = "Sort selection",
 })
+vim.keymap.set("v", "<leader>Ss", ":sort!<CR>", {
+    desc = "Sort selection reverse",
+})
 vim.keymap.set("v", "<C-b>", '"-di**<C-r>-**<Esc>', {
     silent = true,
     desc = "Surround with bold",
@@ -1063,20 +1066,21 @@ local function _format_one_paragraph(lines, max_dw)
 
     local first = lines[1]
     -- Skip code fences, indented code, headings, hr, blockquotes, tables
-    if first:match("^```")
+    if
+        first:match("^```")
         or first:match("^    ")
         or first:match("^#")
         or first:match("^---+$")
         or first:match("^===+$")
         or first:match("^>%s")
-        or first:match("^|") then
+        or first:match("^|")
+    then
         return nil
     end
 
     -- Detect list marker and compute continuation indent
     local prefix, cont_prefix = "", ""
-    local marker = first:match("^(%s*[-*+•]%s+)")
-        or first:match("^(%s*%d+[.)]%s+)")
+    local marker = first:match("^(%s*[-*+•]%s+)") or first:match("^(%s*%d+[.)]%s+)")
     if marker then
         prefix = marker
         cont_prefix = string.rep(" ", vim.fn.strdisplaywidth(marker))
@@ -1109,8 +1113,8 @@ local function _format_one_paragraph(lines, max_dw)
         return vim.fn.nr2char(PUA_BASE + idx)
     end
     text = text:gsub("!?%[.-%]%([^)]*%)", save_link) -- [text](url), ![alt](url)
-    text = text:gsub("%[.-%]%[.-%]", save_link)       -- [text][ref]
-    text = text:gsub("https?://[^%s]+", save_link)    -- bare URLs
+    text = text:gsub("%[.-%]%[.-%]", save_link) -- [text][ref]
+    text = text:gsub("https?://[^%s]+", save_link) -- bare URLs
 
     -- Wrap by display width (not bytes)
     local first_avail = max_dw - vim.fn.strdisplaywidth(prefix)
@@ -1186,8 +1190,7 @@ function _G.markdown_format_buffer()
 
     -- Detect list markers (unordered and ordered)
     local function _is_list_marker(s)
-        return s:match("^%s*[-*+•]%s") ~= nil
-            or s:match("^%s*%d+[.)]%s") ~= nil
+        return s:match("^%s*[-*+•]%s") ~= nil or s:match("^%s*%d+[.)]%s") ~= nil
     end
 
     -- Collect paragraph ranges (split on blank lines AND list-item boundaries)
@@ -1195,14 +1198,16 @@ function _G.markdown_format_buffer()
     local i = 1
     while i <= total do
         local line = vim.api.nvim_buf_get_lines(bufnr, i - 1, i, false)[1] or ""
-        if not line:match("^%s*$")
+        if
+            not line:match("^%s*$")
             and not line:match("^```")
             and not line:match("^    ")
             and not line:match("^#")
             and not line:match("^---+$")
             and not line:match("^===+$")
             and not line:match("^>%s")
-            and not line:match("^|") then
+            and not line:match("^|")
+        then
             local p_start = i
             local p_end = i
             while p_end < total do
