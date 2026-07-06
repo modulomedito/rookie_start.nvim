@@ -1193,14 +1193,20 @@ function _G.markdown_format_buffer()
         return s:match("^%s*[-*+•]%s") ~= nil or s:match("^%s*%d+[.)]%s") ~= nil
     end
 
-    -- Collect paragraph ranges (split on blank lines AND list-item boundaries)
+    -- Collect paragraph ranges (split on blank lines AND list-item boundaries).
+    -- Track code-block state so content between fences is never formatted.
     local paragraphs = {}
     local i = 1
+    local in_code_block = false
     while i <= total do
         local line = vim.api.nvim_buf_get_lines(bufnr, i - 1, i, false)[1] or ""
-        if
+        if line:match("^```") then
+            in_code_block = not in_code_block
+            i = i + 1
+        elseif in_code_block then
+            i = i + 1
+        elseif
             not line:match("^%s*$")
-            and not line:match("^```")
             and not line:match("^    ")
             and not line:match("^#")
             and not line:match("^---+$")
@@ -1223,6 +1229,10 @@ function _G.markdown_format_buffer()
                 end
                 if nl:match("^#") then
                     p_end = p_end - 1 -- roll back: heading starts a new block
+                    break
+                end
+                if nl:match("^```") then
+                    p_end = p_end - 1 -- roll back: fence is not part of paragraph
                     break
                 end
             end
