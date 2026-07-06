@@ -1065,10 +1065,13 @@ local function _format_one_paragraph(lines, max_dw)
     end
 
     local first = lines[1]
-    -- Skip code fences, indented code, headings, hr, blockquotes, tables
+    local is_list = first:match("^(%s*[-*+]%s+)")
+        or first:match("^(%s*•%s+)")
+        or first:match("^(%s*%d+[.)]%s+)")
+    -- Skip code fences, indented code (unless nested list), headings, hr, blockquotes, tables
     if
         first:match("^```")
-        or first:match("^    ")
+        or (not is_list and first:match("^    "))
         or first:match("^#")
         or first:match("^---+$")
         or first:match("^===+$")
@@ -1211,13 +1214,16 @@ function _G.markdown_format_buffer()
         elseif in_code_block then
             i = i + 1
         elseif
-            not line:match("^%s*$")
-            and not line:match("^    ")
-            and not line:match("^#")
-            and not line:match("^---+$")
-            and not line:match("^===+$")
-            and not line:match("^>%s")
-            and not line:match("^|")
+            _is_list_marker(line)
+            or (
+                not line:match("^%s*$")
+                and not line:match("^    ")
+                and not line:match("^#")
+                and not line:match("^---+$")
+                and not line:match("^===+$")
+                and not line:match("^>%s")
+                and not line:match("^|")
+            )
         then
             local p_start = i
             local p_end = i
