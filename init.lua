@@ -1080,7 +1080,10 @@ local function _format_one_paragraph(lines, max_dw)
 
     -- Detect list marker and compute continuation indent
     local prefix, cont_prefix = "", ""
-    local marker = first:match("^(%s*[-*+•]%s+)") or first:match("^(%s*%d+[.)]%s+)")
+    -- Split bullet (U+2022) out: Lua [•] inside [...] splits to bytes
+    local marker = first:match("^(%s*[-*+]%s+)")
+        or first:match("^(%s*•%s+)")
+        or first:match("^(%s*%d+[.)]%s+)")
     if marker then
         prefix = marker
         cont_prefix = string.rep(" ", vim.fn.strdisplaywidth(marker))
@@ -1190,7 +1193,9 @@ function _G.markdown_format_buffer()
 
     -- Detect list markers (unordered and ordered)
     local function _is_list_marker(s)
-        return s:match("^%s*[-*+•]%s") ~= nil or s:match("^%s*%d+[.)]%s") ~= nil
+        return s:match("^%s*[-*+]%s") ~= nil
+            or s:match("^%s*•%s") ~= nil
+            or s:match("^%s*%d+[.)]%s") ~= nil
     end
 
     -- Collect paragraph ranges (split on blank lines AND list-item boundaries).
