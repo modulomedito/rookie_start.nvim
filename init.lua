@@ -1131,27 +1131,59 @@ local function _format_one_paragraph(lines, max_dw)
     local cur_dw = 0
     local cur_max = first_avail
 
+    -- Helper: word characters (Latin alphanumeric) should not be split
+    local function _is_word_char(c)
+        return c:match("[%w_]") ~= nil
+    end
+
     local char_count = vim.fn.strchars(text)
     local ci = 1
     while ci <= char_count do
         local char = vim.fn.strcharpart(text, ci - 1, 1)
-        local char_dw = vim.fn.strdisplaywidth(char)
 
+        -- Skip leading space on a fresh line
         if cur_dw == 0 and char == " " then
             ci = ci + 1
-        elseif cur_dw + char_dw > cur_max then
-            table.insert(wrapped, cur)
-            cur = ""
-            cur_dw = 0
-            cur_max = cont_avail
-            if char ~= " " then
-                cur = char
-                cur_dw = char_dw
-            end
+        elseif _is_word_char(char) then
+            -- Accumulate the whole Latin word, then place it
+            local word = char
+            local word_dw = vim.fn.strdisplaywidth(char)
             ci = ci + 1
+            while ci <= char_count do
+                local nc = vim.fn.strcharpart(text, ci - 1, 1)
+                if not _is_word_char(nc) then
+                    break
+                end
+                word = word .. nc
+                word_dw = word_dw + vim.fn.strdisplaywidth(nc)
+                ci = ci + 1
+            end
+            if cur_dw + word_dw > cur_max then
+                -- Word doesn't fit: break line before it
+                table.insert(wrapped, cur)
+                cur = word
+                cur_dw = word_dw
+                cur_max = cont_avail
+            else
+                cur = cur .. word
+                cur_dw = cur_dw + word_dw
+            end
         else
-            cur = cur .. char
-            cur_dw = cur_dw + char_dw
+            -- CJK / punctuation / space: single breakable unit
+            local char_dw = vim.fn.strdisplaywidth(char)
+            if cur_dw + char_dw > cur_max then
+                table.insert(wrapped, cur)
+                cur = ""
+                cur_dw = 0
+                cur_max = cont_avail
+                if char ~= " " then
+                    cur = char
+                    cur_dw = char_dw
+                end
+            else
+                cur = cur .. char
+                cur_dw = cur_dw + char_dw
+            end
             ci = ci + 1
         end
     end
