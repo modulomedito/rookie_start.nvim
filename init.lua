@@ -1098,12 +1098,8 @@ local function _format_one_paragraph(lines, max_dw)
         if i == 1 and prefix ~= "" then
             parts[#parts + 1] = line:sub(#prefix + 1)
         elseif i > 1 and cont_prefix ~= "" then
-            parts[#parts + 1] = " "
             parts[#parts + 1] = line:gsub("^%s*", "")
         else
-            if i > 1 then
-                parts[#parts + 1] = " "
-            end
             parts[#parts + 1] = line
         end
     end
