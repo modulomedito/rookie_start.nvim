@@ -1221,6 +1221,10 @@ function _G.markdown_format_buffer()
                     p_end = p_end - 1 -- roll back: new list item starts a new paragraph
                     break
                 end
+                if nl:match("^#") then
+                    p_end = p_end - 1 -- roll back: heading starts a new block
+                    break
+                end
             end
             paragraphs[#paragraphs + 1] = { start = p_start, finish = p_end }
             i = p_end + 1 -- next line (blank lines are skipped naturally at loop top)
