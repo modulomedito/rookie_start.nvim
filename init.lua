@@ -542,7 +542,7 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.cmd("silent! setlocal noundofile")
 
         -- nnoremap <silent><buffer> <leader>f :PanguAll<CR>
-        vim.keymap.set("n", "<leader>f", ":PanguAll<CR>", {
+        vim.keymap.set("n", "<leader>fo", ":PanguAll<CR>", {
             silent = true,
             buffer = true,
             desc = "GitCommit: PanguAll",
