@@ -611,6 +611,7 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = "markdown",
     callback = function()
         vim.opt_local.textwidth = 80
+        vim.opt_local.wrapmargin = 2
         vim.opt_local.formatexpr = "v:lua._markdown_formatexpr()"
     end,
 })
@@ -1065,28 +1066,29 @@ local function _format_one_paragraph(lines, max_dw)
     end
 
     local first = lines[1]
-    local is_list = first:match("^(%s*[-*+]%s+)")
+    local is_marker = first:match("^(%s*[-*+]%s+)")
         or first:match("^(%s*•%s+)")
         or first:match("^(%s*%d+[.)]%s+)")
-    -- Skip code fences, indented code (unless nested list), headings, hr, blockquotes, tables
+        or first:match("^(%s*>+%s+)")
+    -- Skip code fences, indented code (unless marker), headings, hr, tables
     if
         first:match("^```")
-        or (not is_list and first:match("^    "))
+        or (not is_marker and first:match("^    "))
         or first:match("^#")
         or first:match("^---+$")
         or first:match("^===+$")
-        or first:match("^>%s")
         or first:match("^|")
     then
         return nil
     end
 
-    -- Detect list marker and compute continuation indent
+    -- Detect marker prefix and compute continuation indent
     local prefix, cont_prefix = "", ""
     -- Split bullet (U+2022) out: Lua [•] inside [...] splits to bytes
     local marker = first:match("^(%s*[-*+]%s+)")
         or first:match("^(%s*•%s+)")
         or first:match("^(%s*%d+[.)]%s+)")
+        or first:match("^(%s*>+%s+)")
     if marker then
         prefix = marker
         cont_prefix = string.rep(" ", vim.fn.strdisplaywidth(marker))
@@ -1228,6 +1230,7 @@ function _G.markdown_format_buffer()
         return s:match("^%s*[-*+]%s") ~= nil
             or s:match("^%s*•%s") ~= nil
             or s:match("^%s*%d+[.)]%s") ~= nil
+            or s:match("^%s*>+%s") ~= nil
     end
 
     -- Collect paragraph ranges (split on blank lines AND list-item boundaries).
@@ -1250,7 +1253,6 @@ function _G.markdown_format_buffer()
                 and not line:match("^#")
                 and not line:match("^---+$")
                 and not line:match("^===+$")
-                and not line:match("^>%s")
                 and not line:match("^|")
             )
         then
