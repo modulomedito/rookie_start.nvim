@@ -821,6 +821,21 @@ add_lazy({ "fedorenchik/VimCalc3" })
 -- Surround with characters
 add_lazy({ "tpope/vim-surround" })
 
+-- Syntax highlight
+add_lazy({ "vim-polyglot/vim-polyglot" })
+
+-- PlantUML
+add_lazy({
+    "charlesnicholson/plantuml.nvim",
+    opts = {
+        auto_start = true,
+        auto_update = true,
+        http_port = 8764,
+        plantuml_server_url = "http://www.plantuml.com/plantuml",
+        auto_launch_browser = "never",
+    },
+})
+
 -- Draw ASCII graph
 add_lazy({
     "jbyuki/venn.nvim",
