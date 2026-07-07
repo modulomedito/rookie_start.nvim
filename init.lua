@@ -114,6 +114,7 @@ if vim.fn.has("gui_running") == 1 or vim.g.neovide then
     vim.o.columns = 107
     vim.o.lines = 25
     vim.g.neovide_cursor_animate_command_line = true
+    vim.opt.linespace = 1
 end
 
 if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
