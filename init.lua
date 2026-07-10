@@ -168,7 +168,7 @@ vim.diagnostic.config({
 -- NVIM_KEYMAPS
 -- =================================================================================================
 -- Basic mappings
-vim.keymap.set("i", "kj", "<Esc>", {
+vim.keymap.set("i", "fd", "<Esc>", {
     desc = "Exit insert mode",
 })
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", {
@@ -451,7 +451,7 @@ vim.keymap.set("x", "<CR>", "Jgq", {
 })
 
 -- Terminal mode
-vim.keymap.set("t", "kj", [[<C-\><C-n>]], {
+vim.keymap.set("t", "fd", [[<C-\><C-n>]], {
     desc = "Exit terminal mode",
 })
 vim.keymap.set("t", "<C-v>", [[<C-\><C-n>pa]], {
