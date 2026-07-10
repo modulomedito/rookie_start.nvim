@@ -202,6 +202,21 @@ end
 vim.keymap.set("n", "<leader>gd", "<C-]>", {
     desc = "Jump tag",
 })
+vim.keymap.set("n", "<leader>Gd", function()
+    local url = vim.fn.expand("<cWORD>")
+    -- Extract URL from markdown link: [text](url)
+    local md_link = url:match("%((https?://[^)]+)%)")
+    if md_link then
+        url = md_link
+    end
+    if url and url:match("^https?://") then
+        vim.ui.open(url)
+    else
+        vim.notify("No URL found under cursor", vim.log.levels.WARN)
+    end
+end, {
+    desc = "Open URL in browser",
+})
 
 vim.keymap.set("n", "*", "*zz", {
     desc = (vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1) and "Windows refine search"
