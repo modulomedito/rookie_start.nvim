@@ -633,6 +633,8 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.textwidth = 80
         vim.opt_local.wrapmargin = 2
         vim.opt_local.formatexpr = "v:lua._markdown_formatexpr()"
+        vim.cmd([[highlight! link @text.emphasis.markdown_inline Normal]])
+        vim.cmd([[highlight! link @markup.italic.markdown_inline Normal]])
     end,
 })
 
