@@ -1132,18 +1132,26 @@ local function _format_one_paragraph(lines, max_dw)
     end
 
     -- Join all lines, stripping prefix from first line and indent from continuation.
-    -- No space insertion: CJK text has no inter-word spaces; PanguAll handles spacing.
+    -- Use a space as separator: line breaks within a paragraph represent
+    -- word boundaries in prose.  Without this, repeated formatting corrupts
+    -- English text (words on adjacent lines fuse together).  For CJK-only text
+    -- this may insert an extra space at the old break point on re-wrap, which
+    -- is cosmetic; losing word spaces in English is data loss.
     local parts = {}
     for i, line in ipairs(lines) do
+        local part
         if i == 1 and prefix ~= "" then
-            parts[#parts + 1] = line:sub(#prefix + 1)
+            part = line:sub(#prefix + 1)
         elseif i > 1 and cont_prefix ~= "" then
-            parts[#parts + 1] = line:gsub("^%s*", "")
+            part = line:gsub("^%s*", "")
         else
-            parts[#parts + 1] = line
+            part = line
         end
+        -- Trim trailing whitespace so the space-join below doesn't double-space.
+        part = part:gsub("%s+$", "")
+        parts[#parts + 1] = part
     end
-    local text = table.concat(parts, "")
+    local text = table.concat(parts, " ")
 
     -- Save links as single-char placeholders (Unicode PUA) to prevent
     -- the line-wrapper from breaking inside a link URL or label.
@@ -1208,6 +1216,11 @@ local function _format_one_paragraph(lines, max_dw)
             -- CJK / punctuation / space: single breakable unit
             local char_dw = vim.fn.strdisplaywidth(char)
             if cur_dw + char_dw > cur_max then
+                -- Keep the breakpoint space at end of line so it isn't lost.
+                -- Trailing whitespace stripping (done before this runs) cleans it up.
+                if char == " " then
+                    cur = cur .. char
+                end
                 table.insert(wrapped, cur)
                 cur = ""
                 cur_dw = 0
