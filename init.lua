@@ -1775,7 +1775,7 @@ add_lazy({
             }),
             t("/// @file       "),
             f(get_filename_no_ext),
-            t(".c"),
+            t(".h"),
             t({ "", "/// @author     " }),
             i(1, "User"),
             t(" ("),
