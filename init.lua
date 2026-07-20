@@ -821,8 +821,12 @@ add_lazy({
     end,
 })
 
+-- Toggle by :ZenMode
+add_lazy({ "folke/zen-mode.nvim" })
+
 add_lazy({ "NMAC427/guess-indent.nvim" })
 
+-- CJK character formatter
 add_lazy({ "hotoo/pangu.vim" })
 
 -- Highlight words/patterns
