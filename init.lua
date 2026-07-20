@@ -1157,18 +1157,55 @@ local function _format_one_paragraph(lines, max_dw)
     end
     local text = table.concat(parts, " ")
 
-    -- Save links as single-char placeholders (Unicode PUA) to prevent
-    -- the line-wrapper from breaking inside a link URL or label.
+    -- Save inline code spans and links as single-char placeholders (Unicode PUA)
+    -- so the line-wrapper never breaks inside them.
     local PUA_BASE = 0xE000
-    local links = {}
-    local function save_link(m)
-        local idx = #links + 1
-        links[idx] = m
+    local protected_segments = {}
+    local function save_segment(m)
+        local idx = #protected_segments + 1
+        protected_segments[idx] = m
         return vim.fn.nr2char(PUA_BASE + idx)
     end
-    text = text:gsub("!?%[.-%]%([^)]*%)", save_link) -- [text](url), ![alt](url)
-    text = text:gsub("%[.-%]%[.-%]", save_link) -- [text][ref]
-    text = text:gsub("https?://[^%s]+", save_link) -- bare URLs
+    local function protect_backtick_code_spans(s)
+        local out = {}
+        local pos = 1
+        while pos <= #s do
+            local open_start, open_end = s:find("`+", pos)
+            if not open_start then
+                table.insert(out, s:sub(pos))
+                break
+            end
+            table.insert(out, s:sub(pos, open_start - 1))
+
+            local fence_len = open_end - open_start + 1
+            local search_pos = open_end + 1
+            local close_start, close_end
+            while search_pos <= #s do
+                local run_start, run_end = s:find("`+", search_pos)
+                if not run_start then
+                    break
+                end
+                if run_end - run_start + 1 == fence_len then
+                    close_start, close_end = run_start, run_end
+                    break
+                end
+                search_pos = run_end + 1
+            end
+
+            if close_start then
+                table.insert(out, save_segment(s:sub(open_start, close_end)))
+                pos = close_end + 1
+            else
+                table.insert(out, s:sub(open_start))
+                break
+            end
+        end
+        return table.concat(out)
+    end
+    text = protect_backtick_code_spans(text)
+    text = text:gsub("!?%[.-%]%([^)]*%)", save_segment) -- [text](url), ![alt](url)
+    text = text:gsub("%[.-%]%[.-%]", save_segment) -- [text][ref]
+    text = text:gsub("https?://[^%s]+", save_segment) -- bare URLs
 
     -- Wrap by display width (not bytes)
     local first_avail = max_dw - vim.fn.strdisplaywidth(prefix)
@@ -1244,11 +1281,11 @@ local function _format_one_paragraph(lines, max_dw)
         table.insert(wrapped, cur)
     end
 
-    -- Restore links from placeholders
-    for i = #links, 1, -1 do
+    -- Restore inline code spans and links from placeholders
+    for i = #protected_segments, 1, -1 do
         local placeholder = vim.fn.nr2char(PUA_BASE + i)
         for j, line in ipairs(wrapped) do
-            wrapped[j] = line:gsub(placeholder, links[i], 1)
+            wrapped[j] = line:gsub(placeholder, protected_segments[i], 1)
         end
     end
 
