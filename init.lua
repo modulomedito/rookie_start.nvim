@@ -1161,9 +1161,11 @@ local function _format_one_paragraph(lines, max_dw)
     -- so the line-wrapper never breaks inside them.
     local PUA_BASE = 0xE000
     local protected_segments = {}
+    local protected_widths = {}
     local function save_segment(m)
         local idx = #protected_segments + 1
         protected_segments[idx] = m
+        protected_widths[idx] = vim.fn.strdisplaywidth(m)
         return vim.fn.nr2char(PUA_BASE + idx)
     end
     local function protect_backtick_code_spans(s)
@@ -1221,13 +1223,34 @@ local function _format_one_paragraph(lines, max_dw)
         return c:match("[%w_]") ~= nil
     end
 
+    local function _protected_segment_width(c)
+        local codepoint = vim.fn.char2nr(c)
+        local idx = codepoint - PUA_BASE
+        if idx >= 1 and idx <= #protected_widths then
+            return protected_widths[idx]
+        end
+        return nil
+    end
+
     local char_count = vim.fn.strchars(text)
     local ci = 1
     while ci <= char_count do
         local char = vim.fn.strcharpart(text, ci - 1, 1)
+        local protected_dw = _protected_segment_width(char)
 
         -- Skip leading space on a fresh line
         if cur_dw == 0 and char == " " then
+            ci = ci + 1
+        elseif protected_dw then
+            if cur_dw + protected_dw > cur_max and cur ~= "" then
+                table.insert(wrapped, cur)
+                cur = char
+                cur_dw = protected_dw
+                cur_max = cont_avail
+            else
+                cur = cur .. char
+                cur_dw = cur_dw + protected_dw
+            end
             ci = ci + 1
         elseif _is_word_char(char) then
             -- Accumulate the whole Latin word, then place it
