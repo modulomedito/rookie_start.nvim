@@ -903,14 +903,14 @@ add_lazy({
     end,
 })
 
-add_lazy({
-    "sphamba/smear-cursor.nvim",
-    config = function()
-        if not vim.g.neovide then
-            require("smear_cursor").setup()
-        end
-    end,
-})
+-- add_lazy({
+--     "sphamba/smear-cursor.nvim",
+--     config = function()
+--         if not vim.g.neovide then
+--             require("smear_cursor").setup()
+--         end
+--     end,
+-- })
 
 add_lazy({
     "MagicDuck/grug-far.nvim",
