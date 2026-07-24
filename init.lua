@@ -986,6 +986,9 @@ add_lazy({
     },
     config = function()
         require("telescope").setup({
+            defaults = {
+                cache_picker = { num_pickers = 0 },
+            },
             extensions = {
                 ["ui-select"] = { require("telescope.themes").get_dropdown() },
             },
