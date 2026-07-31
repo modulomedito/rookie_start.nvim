@@ -1139,11 +1139,9 @@ local function _format_one_paragraph(lines, max_dw)
     end
 
     -- Join all lines, stripping prefix from first line and indent from continuation.
-    -- Use a space as separator: line breaks within a paragraph represent
-    -- word boundaries in prose.  Without this, repeated formatting corrupts
-    -- English text (words on adjacent lines fuse together).  For CJK-only text
-    -- this may insert an extra space at the old break point on re-wrap, which
-    -- is cosmetic; losing word spaces in English is data loss.
+    -- Line breaks within a paragraph represent word boundaries in prose.
+    -- Insert a space only when the boundary is NOT between two CJK characters
+    -- (CJK text has no word spacing; English text needs it to avoid fusing words).
     local parts = {}
     for i, line in ipairs(lines) do
         local part
@@ -1154,11 +1152,26 @@ local function _format_one_paragraph(lines, max_dw)
         else
             part = line
         end
-        -- Trim trailing whitespace so the space-join below doesn't double-space.
+        -- Trim trailing whitespace so the join below doesn't double-space.
         part = part:gsub("%s+$", "")
         parts[#parts + 1] = part
     end
-    local text = table.concat(parts, " ")
+    local function _is_cjk(c)
+        local cp = vim.fn.char2nr(c)
+        return (cp >= 0x2E80 and cp <= 0x9FFF)
+            or (cp >= 0xF900 and cp <= 0xFAFF)
+            or (cp >= 0xFF00 and cp <= 0xFFEF)
+    end
+    local text = parts[1] or ""
+    for i = 2, #parts do
+        local prev = vim.fn.strcharpart(text, vim.fn.strchars(text) - 1, 1)
+        local nxt = vim.fn.strcharpart(parts[i], 0, 1)
+        if prev ~= "" and nxt ~= "" and _is_cjk(prev) and _is_cjk(nxt) then
+            text = text .. parts[i]
+        else
+            text = text .. " " .. parts[i]
+        end
+    end
 
     -- Save inline code spans and links as single-char placeholders (Unicode PUA)
     -- so the line-wrapper never breaks inside them.
@@ -1327,6 +1340,9 @@ local function _format_one_paragraph(lines, max_dw)
 
     return result
 end
+
+-- Remove space between Chinsese and full-width characters
+-- :%s/\([\u4e00-\u9fa5]\)\s\+\([\u4e00-\u9fa5]\)/\1\2/g
 
 -- formatexpr for gqq: formats the current paragraph (called by neovim's gq operator)
 function _G._markdown_formatexpr()
