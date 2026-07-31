@@ -1114,9 +1114,10 @@ local function _format_one_paragraph(lines, max_dw)
         or first:match("^(%s*•%s+)")
         or first:match("^(%s*%d+[.)]%s+)")
         or first:match("^(%s*>+%s+)")
-    -- Skip code fences, indented code (unless marker), headings, hr, tables
+    -- Skip code/math fences, indented code (unless marker), headings, hr, tables
     if
         first:match("^```")
+        or first:match("^%s*%$%$")
         or (not is_marker and first:match("^    "))
         or first:match("^#")
         or first:match("^---+$")
@@ -1367,16 +1368,20 @@ function _G.markdown_format_buffer()
     end
 
     -- Collect paragraph ranges (split on blank lines AND list-item boundaries).
-    -- Track code-block state so content between fences is never formatted.
+    -- Track code/math-block state so content between fences is never formatted.
     local paragraphs = {}
     local i = 1
     local in_code_block = false
+    local in_math_block = false
     while i <= total do
         local line = vim.api.nvim_buf_get_lines(bufnr, i - 1, i, false)[1] or ""
         if line:match("^```") then
             in_code_block = not in_code_block
             i = i + 1
-        elseif in_code_block then
+        elseif line:match("^%s*%$%$") then
+            in_math_block = not in_math_block
+            i = i + 1
+        elseif in_code_block or in_math_block then
             i = i + 1
         elseif
             _is_list_marker(line)
@@ -1408,6 +1413,10 @@ function _G.markdown_format_buffer()
                 end
                 if nl:match("^```") then
                     p_end = p_end - 1 -- roll back: fence is not part of paragraph
+                    break
+                end
+                if nl:match("^%s*%$%$") then
+                    p_end = p_end - 1 -- roll back: math fence is not part of paragraph
                     break
                 end
             end
