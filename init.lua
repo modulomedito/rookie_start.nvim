@@ -1477,7 +1477,7 @@ add_lazy({
                 vim.cmd("%s/\\s\\+$//e")
                 -- Markdown special formatting
                 if vim.bo.filetype == "markdown" then
-                    vim.cmd("PanguAll")
+                    -- vim.cmd("PanguAll")
                     vim.cmd("silent! call v:lua.markdown_format_buffer()")
                 end
                 -- LSP format
@@ -1519,7 +1519,7 @@ add_lazy({
                 vim.cmd("%s/\\s\\+$//e")
                 -- Markdown special formatting
                 if vim.bo.filetype == "markdown" then
-                    vim.cmd("PanguAll")
+                    -- vim.cmd("PanguAll")
                     vim.cmd("silent! call v:lua.markdown_format_buffer()")
                 end
                 -- LSP format
