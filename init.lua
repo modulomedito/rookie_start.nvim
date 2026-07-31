@@ -1138,6 +1138,11 @@ add_lazy({
                 local saved_vcol = vim.fn.virtcol(".")
                 -- Remove trailing whitespaces
                 vim.cmd("%s/\\s\\+$//e")
+                -- Markdown: insert space between Chinese and English
+                if vim.bo.filetype == "markdown" then
+                    vim.cmd("%s/\\([\\u4e00-\\u9fa5]\\)\\([a-zA-Z0-9]\\)/\\1 \\2/ge")
+                    vim.cmd("%s/\\([a-zA-Z0-9]\\)\\([\\u4e00-\\u9fa5]\\)/\\1 \\2/ge")
+                end
                 -- LSP format
                 local ok, conform = pcall(require, "conform")
                 if ok then
@@ -1175,6 +1180,11 @@ add_lazy({
                 local saved_vcol = vim.fn.virtcol(".")
                 -- Remove trailing whitespaces
                 vim.cmd("%s/\\s\\+$//e")
+                -- Markdown: insert space between Chinese and English
+                if vim.bo.filetype == "markdown" then
+                    vim.cmd("%s/\\([\\u4e00-\\u9fa5]\\)\\([a-zA-Z0-9]\\)/\\1 \\2/ge")
+                    vim.cmd("%s/\\([a-zA-Z0-9]\\)\\([\\u4e00-\\u9fa5]\\)/\\1 \\2/ge")
+                end
                 -- LSP format
                 local ok, conform = pcall(require, "conform")
                 if ok then
