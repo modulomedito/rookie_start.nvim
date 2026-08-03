@@ -1104,10 +1104,16 @@ add_lazy({
         local lint = require("lint")
 
         -- Extend built-in cppcheck linter with MISRA-C:2012 addon
+        -- Use full path: the Strawberry Perl cppcheck has a broken cfg path
+        -- Remove build-dir func: returns nil when no build/ dir exists,
+        -- which creates a hole in the args array → uv.spawn truncates on Windows
         local cppcheck = lint.linters.cppcheck
+        cppcheck.cmd = "C:/Program Files/Cppcheck/cppcheck.exe"
+        cppcheck.ignore_exitcode = true
         local misra_addon = vim.fn.stdpath("config") .. "/cppcheck_misra_addon.json"
         table.insert(cppcheck.args, 2, "--addon=" .. misra_addon)
         table.insert(cppcheck.args, 3, "--suppress=missingIncludeSystem")
+        table.remove(cppcheck.args, 7) -- the nil-returning build-dir function
 
         -- Per nvim-lint README
         lint.linters_by_ft = {
