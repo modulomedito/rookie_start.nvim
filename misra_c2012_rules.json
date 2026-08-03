@@ -1,0 +1,638 @@
+{
+    "Dir 1.1": {
+        "text": "Any implementation-defined behaviour on which the output of the program depends shall be documented and understood",
+        "severity": "Required"
+    },
+    "Dir 2.1": {
+        "text": "All source files shall compile without any compilation errors",
+        "severity": "Required"
+    },
+    "Dir 3.1": {
+        "text": "All code shall be traceable to documented requirements",
+        "severity": "Required"
+    },
+    "Dir 4.1": {
+        "text": "Run-time failures shall be minimized",
+        "severity": "Mandatory"
+    },
+    "Dir 4.2": {
+        "text": "All usage of assembly language should be documented",
+        "severity": "Required"
+    },
+    "Dir 4.3": {
+        "text": "Assembly language shall be encapsulated and isolated",
+        "severity": "Required"
+    },
+    "Dir 4.4": {
+        "text": "Sections of code should not be commented out",
+        "severity": "Required"
+    },
+    "Dir 4.5": {
+        "text": "Identifiers in the same name space with overlapping visibility should be typographically unambiguous",
+        "severity": "Required"
+    },
+    "Dir 4.6": {
+        "text": "typedefs that indicate size and signedness should be used in place of the basic numerical types",
+        "severity": "Required"
+    },
+    "Dir 4.7": {
+        "text": "If a function returns error information, then that error information shall be tested",
+        "severity": "Required"
+    },
+    "Dir 4.8": {
+        "text": "If a pointer to a structure or union is never dereferenced within a translation unit, then the implementation of the object should be hidden",
+        "severity": "Required"
+    },
+    "Dir 4.9": {
+        "text": "A function should be used in preference to a function-like macro when they are interchangeable",
+        "severity": "Required"
+    },
+    "Rule 1.1": {
+        "text": "The program shall contain no violations of the standard C syntax and constraints, and shall not exceed the implementation's translation limits",
+        "severity": "Required"
+    },
+    "Rule 1.2": {
+        "text": "Language extensions should not be used",
+        "severity": "Required"
+    },
+    "Rule 1.3": {
+        "text": "There shall be no occurrence of undefined or critical unspecified behaviour",
+        "severity": "Required"
+    },
+    "Rule 2.1": {
+        "text": "A project shall not contain unreachable code",
+        "severity": "Mandatory"
+    },
+    "Rule 2.2": {
+        "text": "There shall be no dead code",
+        "severity": "Mandatory"
+    },
+    "Rule 2.3": {
+        "text": "A project should not contain unused type declarations",
+        "severity": "Mandatory"
+    },
+    "Rule 2.4": {
+        "text": "A project should not contain unused tag declarations",
+        "severity": "Mandatory"
+    },
+    "Rule 2.5": {
+        "text": "A project should not contain unused macro declarations",
+        "severity": "Mandatory"
+    },
+    "Rule 2.6": {
+        "text": "A function shall not contain unused label declarations",
+        "severity": "Mandatory"
+    },
+    "Rule 2.7": {
+        "text": "There should be no unused parameters in functions",
+        "severity": "Required"
+    },
+    "Rule 3.1": {
+        "text": "The character sequences /* and // shall not be used within a comment",
+        "severity": "Required"
+    },
+    "Rule 3.2": {
+        "text": "Line-splicing shall not be used in // comments",
+        "severity": "Required"
+    },
+    "Rule 4.1": {
+        "text": "Octal and hexadecimal escape sequences shall be terminated",
+        "severity": "Required"
+    },
+    "Rule 4.2": {
+        "text": "Trigraphs should not be used",
+        "severity": "Required"
+    },
+    "Rule 5.1": {
+        "text": "External identifiers shall be distinct",
+        "severity": "Required"
+    },
+    "Rule 5.2": {
+        "text": "Identifiers declared in the same scope and name space shall be distinct",
+        "severity": "Required"
+    },
+    "Rule 5.3": {
+        "text": "An identifier declared in an inner scope shall not hide an identifier declared in an outer scope",
+        "severity": "Required"
+    },
+    "Rule 5.4": {
+        "text": "Macro identifiers shall be distinct",
+        "severity": "Required"
+    },
+    "Rule 5.5": {
+        "text": "Identifiers shall be distinct from macro names",
+        "severity": "Required"
+    },
+    "Rule 5.6": {
+        "text": "A typedef name shall be a unique identifier",
+        "severity": "Required"
+    },
+    "Rule 5.7": {
+        "text": "A tag name shall be a unique identifier",
+        "severity": "Required"
+    },
+    "Rule 5.8": {
+        "text": "Identifiers that define objects or functions with external linkage shall be unique",
+        "severity": "Required"
+    },
+    "Rule 5.9": {
+        "text": "Identifiers that define objects or functions with internal linkage should be unique",
+        "severity": "Required"
+    },
+    "Rule 6.1": {
+        "text": "Bit-fields shall only be declared with an appropriate type",
+        "severity": "Required"
+    },
+    "Rule 6.2": {
+        "text": "Single-bit named bit fields shall not be of a signed type",
+        "severity": "Required"
+    },
+    "Rule 7.1": {
+        "text": "Octal constants shall not be used",
+        "severity": "Required"
+    },
+    "Rule 7.2": {
+        "text": "A u or U suffix shall be applied to all integer constants that are represented in an unsigned type",
+        "severity": "Required"
+    },
+    "Rule 7.3": {
+        "text": "The lowercase character l shall not be used in a literal suffix",
+        "severity": "Required"
+    },
+    "Rule 7.4": {
+        "text": "A string literal shall not be assigned to an object unless the objects type is pointer to const-qualified char",
+        "severity": "Required"
+    },
+    "Rule 8.1": {
+        "text": "Types shall be explicitly specified",
+        "severity": "Required"
+    },
+    "Rule 8.2": {
+        "text": "Function types shall be in prototype form with named parameters",
+        "severity": "Required"
+    },
+    "Rule 8.3": {
+        "text": "All declarations of an object or function shall use the same names and type qualifiers",
+        "severity": "Required"
+    },
+    "Rule 8.4": {
+        "text": "A compatible declaration shall be visible when an object or function with external linkage is defined",
+        "severity": "Required"
+    },
+    "Rule 8.5": {
+        "text": "An external object or function shall be declared once in one and only one file",
+        "severity": "Required"
+    },
+    "Rule 8.6": {
+        "text": "An identifier with external linkage shall have exactly one external definition",
+        "severity": "Required"
+    },
+    "Rule 8.7": {
+        "text": "Functions and objects should not be defined with external linkage if they are referenced in only one translation unit",
+        "severity": "Required"
+    },
+    "Rule 8.8": {
+        "text": "The static storage class specifier shall be used in all declarations of objects and functions that have internal linkage",
+        "severity": "Required"
+    },
+    "Rule 8.9": {
+        "text": "An object should be defined at block scope if its identifier only appears in a single function",
+        "severity": "Required"
+    },
+    "Rule 8.10": {
+        "text": "An inline function shall be declared with the static storage class",
+        "severity": "Required"
+    },
+    "Rule 8.11": {
+        "text": "When an array with external linkage is declared, its size should be explicitly specified",
+        "severity": "Required"
+    },
+    "Rule 8.12": {
+        "text": "Within an enumerator list, the value of an implicitly-specified enumeration constant shall be unique",
+        "severity": "Required"
+    },
+    "Rule 8.13": {
+        "text": "A pointer should point to a const-qualified type whenever possible",
+        "severity": "Required"
+    },
+    "Rule 8.14": {
+        "text": "The restrict type qualifier shall not be used",
+        "severity": "Required"
+    },
+    "Rule 9.1": {
+        "text": "The value of an object with automatic storage duration shall not be read before it has been set",
+        "severity": "Mandatory"
+    },
+    "Rule 9.2": {
+        "text": "The initializer for an aggregate or union shall be enclosed in braces",
+        "severity": "Required"
+    },
+    "Rule 9.3": {
+        "text": "Arrays shall not be partially initialized",
+        "severity": "Required"
+    },
+    "Rule 9.4": {
+        "text": "An element of an object shall not be initialized more than once",
+        "severity": "Required"
+    },
+    "Rule 9.5": {
+        "text": "Where designated initializers are used to initialize an array object the size of the array shall be specified explicitly",
+        "severity": "Required"
+    },
+    "Rule 10.1": {
+        "text": "Operands shall not be of an inappropriate essential type",
+        "severity": "Required"
+    },
+    "Rule 10.2": {
+        "text": "Expressions of essentially character type shall not be used inappropriately in addition and subtraction operations",
+        "severity": "Required"
+    },
+    "Rule 10.3": {
+        "text": "The value of an expression shall not be assigned to an object with a narrower essential type or a different essential type category",
+        "severity": "Required"
+    },
+    "Rule 10.4": {
+        "text": "Both operands of an operator in which the usual arithmetic conversions are performed shall have the same essential type category",
+        "severity": "Required"
+    },
+    "Rule 10.5": {
+        "text": "The value of an expression should not be cast to an inappropriate essential type",
+        "severity": "Required"
+    },
+    "Rule 10.6": {
+        "text": "The value of a composite expression shall not be assigned to an object with wider essential type",
+        "severity": "Required"
+    },
+    "Rule 10.7": {
+        "text": "If a composite expression is used as one operand of an operator in which the usual arithmetic conversions are performed then the other operand shall not have wider essential type",
+        "severity": "Required"
+    },
+    "Rule 10.8": {
+        "text": "The value of a composite expression shall not be cast to a different essential type category or a wider essential type",
+        "severity": "Required"
+    },
+    "Rule 11.1": {
+        "text": "Conversions shall not be performed between a pointer to a function and any other type",
+        "severity": "Required"
+    },
+    "Rule 11.2": {
+        "text": "Conversions shall not be performed between a pointer to an incomplete type and any other type",
+        "severity": "Required"
+    },
+    "Rule 11.3": {
+        "text": "A cast shall not be performed between a pointer to object type and a pointer to a different object type",
+        "severity": "Required"
+    },
+    "Rule 11.4": {
+        "text": "A conversion should not be performed between a pointer to object and an integer type",
+        "severity": "Required"
+    },
+    "Rule 11.5": {
+        "text": "A conversion should not be performed from pointer to void into pointer to object",
+        "severity": "Required"
+    },
+    "Rule 11.6": {
+        "text": "A cast shall not be performed between pointer to void and an arithmetic type",
+        "severity": "Required"
+    },
+    "Rule 11.7": {
+        "text": "A cast shall not be performed between pointer to object and a non-integer arithmetic type",
+        "severity": "Required"
+    },
+    "Rule 11.8": {
+        "text": "A cast shall not remove any const or volatile qualification from the type pointed to by a pointer",
+        "severity": "Required"
+    },
+    "Rule 11.9": {
+        "text": "The macro NULL shall be the only permitted form of integer null pointer constant",
+        "severity": "Required"
+    },
+    "Rule 12.1": {
+        "text": "The precedence of operators within expressions should be made explicit",
+        "severity": "Required"
+    },
+    "Rule 12.2": {
+        "text": "The right hand operand of a shift operator shall lie in the range zero to one less than the width in bits of the essential type of the left hand operand",
+        "severity": "Required"
+    },
+    "Rule 12.3": {
+        "text": "The comma operator should not be used",
+        "severity": "Required"
+    },
+    "Rule 12.4": {
+        "text": "Evaluation of constant expressions should not lead to unsigned integer wrap-around",
+        "severity": "Required"
+    },
+    "Rule 13.1": {
+        "text": "Initializer lists shall not contain persistent side effects",
+        "severity": "Mandatory"
+    },
+    "Rule 13.2": {
+        "text": "The value of an expression and its persistent side effects shall be the same under all permitted evaluation orders",
+        "severity": "Required"
+    },
+    "Rule 13.3": {
+        "text": "A full expression containing an increment (++) or decrement (--) operator should have no other potential side effects other than that caused by the increment or decrement operator",
+        "severity": "Required"
+    },
+    "Rule 13.4": {
+        "text": "The result of an assignment operator should not be used",
+        "severity": "Required"
+    },
+    "Rule 13.5": {
+        "text": "The right hand operand of a logical && or || operator shall not contain persistent side effects",
+        "severity": "Required"
+    },
+    "Rule 13.6": {
+        "text": "The operand of the sizeof operator shall not contain any expression which has potential side effects",
+        "severity": "Mandatory"
+    },
+    "Rule 14.1": {
+        "text": "A loop counter shall not have essentially floating type",
+        "severity": "Required"
+    },
+    "Rule 14.2": {
+        "text": "A for loop shall be well-formed",
+        "severity": "Required"
+    },
+    "Rule 14.3": {
+        "text": "Controlling expressions shall not be invariant",
+        "severity": "Required"
+    },
+    "Rule 14.4": {
+        "text": "The controlling expression of an if statement and the controlling expression of an iteration-statement shall have essentially Boolean type",
+        "severity": "Required"
+    },
+    "Rule 15.1": {
+        "text": "The goto statement should not be used",
+        "severity": "Required"
+    },
+    "Rule 15.2": {
+        "text": "The goto statement shall jump to a label declared later in the same function",
+        "severity": "Required"
+    },
+    "Rule 15.3": {
+        "text": "Any label referenced by a goto statement shall be declared in the same block, or in any block enclosing the goto statement",
+        "severity": "Required"
+    },
+    "Rule 15.4": {
+        "text": "There should be no more than one break or goto statement used to terminate any iteration statement",
+        "severity": "Required"
+    },
+    "Rule 15.5": {
+        "text": "A function should have a single point of exit at the end",
+        "severity": "Required"
+    },
+    "Rule 15.6": {
+        "text": "The body of an iteration-statement or a selection-statement shall be a compound-statement",
+        "severity": "Required"
+    },
+    "Rule 15.7": {
+        "text": "All if  else if constructs shall be terminated with an else statement",
+        "severity": "Required"
+    },
+    "Rule 16.1": {
+        "text": "All switch statements shall be well-formed",
+        "severity": "Required"
+    },
+    "Rule 16.2": {
+        "text": "A switch label shall only be used when the most closely-enclosing compound statement is the body of a switch statement",
+        "severity": "Required"
+    },
+    "Rule 16.3": {
+        "text": "An unconditional break statement shall terminate every switch-clause",
+        "severity": "Required"
+    },
+    "Rule 16.4": {
+        "text": "Every switch statement shall have a default label",
+        "severity": "Required"
+    },
+    "Rule 16.5": {
+        "text": "A default label shall appear as either the first or the last switch label of a switch statement",
+        "severity": "Required"
+    },
+    "Rule 16.6": {
+        "text": "Every switch statement shall have at least two switch-clauses",
+        "severity": "Required"
+    },
+    "Rule 16.7": {
+        "text": "A switch-expression shall not have essentially Boolean type",
+        "severity": "Required"
+    },
+    "Rule 17.1": {
+        "text": "The features of <stdarg.h> shall not be used",
+        "severity": "Required"
+    },
+    "Rule 17.2": {
+        "text": "Functions shall not call themselves, either directly or indirectly",
+        "severity": "Required"
+    },
+    "Rule 17.3": {
+        "text": "A function shall not be declared implicitly",
+        "severity": "Required"
+    },
+    "Rule 17.4": {
+        "text": "All exit paths from a function with non-void return type shall have an explicit return statement with an expression",
+        "severity": "Required"
+    },
+    "Rule 17.5": {
+        "text": "The function argument corresponding to a parameter declared to have an array type shall have an appropriate number of elements",
+        "severity": "Required"
+    },
+    "Rule 17.6": {
+        "text": "The declaration of an array parameter shall not contain the static keyword between the [ ]",
+        "severity": "Required"
+    },
+    "Rule 17.7": {
+        "text": "The value returned by a function having non-void return type shall be used",
+        "severity": "Mandatory"
+    },
+    "Rule 17.8": {
+        "text": "A function parameter should not be modified",
+        "severity": "Required"
+    },
+    "Rule 18.1": {
+        "text": "A pointer resulting from arithmetic on a pointer operand shall address an element of the same array as that pointer operand",
+        "severity": "Required"
+    },
+    "Rule 18.2": {
+        "text": "Subtraction between pointers shall only be applied to pointers that address elements of the same array",
+        "severity": "Required"
+    },
+    "Rule 18.3": {
+        "text": "The relational operators >, >=, < and <= shall not be applied to objects of pointer type except where they point into the same object",
+        "severity": "Mandatory"
+    },
+    "Rule 18.4": {
+        "text": "The +, -, += and -= operators should not be applied to an expression of pointer type",
+        "severity": "Required"
+    },
+    "Rule 18.5": {
+        "text": "Declarations should contain no more than two levels of pointer nesting",
+        "severity": "Required"
+    },
+    "Rule 18.6": {
+        "text": "The address of an object with automatic storage shall not be copied to another object that persists after the first object has ceased to exist",
+        "severity": "Required"
+    },
+    "Rule 18.7": {
+        "text": "Flexible array members shall not be declared",
+        "severity": "Required"
+    },
+    "Rule 18.8": {
+        "text": "Variable-length array types shall not be used",
+        "severity": "Required"
+    },
+    "Rule 19.1": {
+        "text": "An object shall not be assigned or copied to an overlapping object",
+        "severity": "Mandatory"
+    },
+    "Rule 19.2": {
+        "text": "The union keyword should not be used",
+        "severity": "Required"
+    },
+    "Rule 20.1": {
+        "text": "#include directives should only be preceded by preprocessor directives or comments",
+        "severity": "Required"
+    },
+    "Rule 20.2": {
+        "text": "The ',  or \\ characters and the /* or // character sequences shall not occur in a header file name",
+        "severity": "Required"
+    },
+    "Rule 20.3": {
+        "text": "The #include directive shall be followed by either a <filename> or \\filename\\ sequence",
+        "severity": "Required"
+    },
+    "Rule 20.4": {
+        "text": "A macro shall not be defined with the same name as a keyword",
+        "severity": "Required"
+    },
+    "Rule 20.5": {
+        "text": "#undef should not be used",
+        "severity": "Required"
+    },
+    "Rule 20.6": {
+        "text": "Tokens that look like a preprocessing directive shall not occur within a macro argument",
+        "severity": "Required"
+    },
+    "Rule 20.7": {
+        "text": "Expressions resulting from the expansion of macro parameters shall be enclosed in parentheses",
+        "severity": "Required"
+    },
+    "Rule 20.8": {
+        "text": "The controlling expression of a #if or #elif preprocessing directive shall evaluate to 0 or 1",
+        "severity": "Required"
+    },
+    "Rule 20.9": {
+        "text": "All identifiers used in the controlling expression of #if or #elif preprocessing directives shall be #define'd before evaluation",
+        "severity": "Required"
+    },
+    "Rule 20.10": {
+        "text": "The # and ## preprocessor operators should not be used",
+        "severity": "Required"
+    },
+    "Rule 20.11": {
+        "text": "A macro parameter immediately following a # operator should not immediately be followed by a ## operator",
+        "severity": "Required"
+    },
+    "Rule 20.12": {
+        "text": "A macro parameter used as an operand to the # or ## operators, which is itself subject to further macro replacement, shall only be used as an operand to these operators",
+        "severity": "Required"
+    },
+    "Rule 20.13": {
+        "text": "A line whose first token is # shall be a valid preprocessing directive",
+        "severity": "Required"
+    },
+    "Rule 20.14": {
+        "text": "All #else, #elif and #endif preprocessor directives shall reside in the same file as the #if, #ifdef or #ifndef directive to which they are related",
+        "severity": "Required"
+    },
+    "Rule 21.1": {
+        "text": "#define and #undef shall not be used on a reserved identifier or reserved macro name",
+        "severity": "Required"
+    },
+    "Rule 21.2": {
+        "text": "A reserved identifier or macro name shall not be declared",
+        "severity": "Required"
+    },
+    "Rule 21.3": {
+        "text": "The memory allocation and deallocation functions of <stdlib.h> shall not be used",
+        "severity": "Required"
+    },
+    "Rule 21.4": {
+        "text": "The standard header file <setjmp.h> shall not be used",
+        "severity": "Required"
+    },
+    "Rule 21.5": {
+        "text": "The standard header file <signal.h> shall not be used",
+        "severity": "Required"
+    },
+    "Rule 21.6": {
+        "text": "The Standard Library input/output functions shall not be used",
+        "severity": "Required"
+    },
+    "Rule 21.7": {
+        "text": "The atof, atoi, atol and atoll functions of <stdlib.h> shall not be used",
+        "severity": "Required"
+    },
+    "Rule 21.8": {
+        "text": "The library functions abort, exit, getenv and system of <stdlib.h> shall not be used",
+        "severity": "Required"
+    },
+    "Rule 21.9": {
+        "text": "The library functions bsearch and qsort of <stdlib.h> shall not be used",
+        "severity": "Required"
+    },
+    "Rule 21.10": {
+        "text": "The Standard Library time and date functions shall not be used",
+        "severity": "Required"
+    },
+    "Rule 21.11": {
+        "text": "The standard header file <tgmath.h> shall not be used",
+        "severity": "Required"
+    },
+    "Rule 21.12": {
+        "text": "The exception handling features of <fenv.h> should not be used",
+        "severity": "Required"
+    },
+    "Rule 22.1": {
+        "text": "All resources obtained dynamically by means of Standard Library functions shall be explicitly released",
+        "severity": "Required"
+    },
+    "Rule 22.2": {
+        "text": "A block of memory shall only be freed if it was allocated by means of a Standard Library function",
+        "severity": "Required"
+    },
+    "Rule 22.3": {
+        "text": "The same file shall not be open for read and write access at the same time on different streams",
+        "severity": "Required"
+    },
+    "Rule 22.4": {
+        "text": "There shall be no attempt to write to a stream which has been opened as read-only",
+        "severity": "Required"
+    },
+    "Rule 22.5": {
+        "text": "A pointer to a FILE object shall not be dereferenced",
+        "severity": "Required"
+    },
+    "Rule 22.6": {
+        "text": "The value of a pointer to a FILE shall not be used after the associated stream has been closed",
+        "severity": "Required"
+    },
+    "Rule 22.7": {
+        "text": "The macro EOF shall only be compared with the unmodified return value from any Standard Library function capable of returning EOF",
+        "severity": "Required"
+    },
+    "Rule 22.8": {
+        "text": "The value of errno shall be set to zero prior to a call to an errno-setting-function",
+        "severity": "Required"
+    },
+    "Rule 22.9": {
+        "text": "The value of errno shall be tested against zero after calling an errno-setting-function",
+        "severity": "Required"
+    },
+    "Rule 22.10": {
+        "text": "The value of errno shall only be tested when the last function to be called was an errno-setting-function",
+        "severity": "Required"
+    }
+}

@@ -1098,8 +1098,30 @@ add_lazy({
     end,
 })
 
+add_lazy({
+    "mfussenegger/nvim-lint",
+    config = function()
+        local lint = require("lint")
 
+        -- Extend built-in cppcheck linter with MISRA-C:2012 addon
+        local cppcheck = lint.linters.cppcheck
+        local misra_addon = vim.fn.stdpath("config") .. "/cppcheck_misra_addon.json"
+        table.insert(cppcheck.args, 2, "--addon=" .. misra_addon)
+        table.insert(cppcheck.args, 3, "--suppress=missingIncludeSystem")
 
+        -- Per nvim-lint README
+        lint.linters_by_ft = {
+            c = { "cppcheck" },
+        }
+
+        vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+            group = vim.api.nvim_create_augroup("RkLint", { clear = true }),
+            callback = function()
+                require("lint").try_lint()
+            end,
+        })
+    end,
+})
 
 add_lazy({
     "stevearc/conform.nvim",

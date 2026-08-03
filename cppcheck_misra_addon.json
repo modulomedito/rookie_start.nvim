@@ -1,0 +1,4 @@
+{
+    "script": "misra.py",
+    "args": ["--rule-texts=C:/Users/admin/AppData/Local/nvim/misra_c2012_rules.json"]
+}
