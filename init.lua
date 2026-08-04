@@ -1478,6 +1478,24 @@ add_lazy({
             }),
         })
 
+        local adoxy = s("adoxy", {
+            t({
+                "/// @brief",
+                "/// @details",
+                "/// @par Traceability:",
+                "/// @par Syntax:",
+                "/// @par Description:",
+                "/// @par Service ID:",
+                "/// @par Sync/Async:",
+                "/// @par Reentrancy:",
+                "/// @param[in] None",
+                "/// @param[in,out] None",
+                "/// @param[out] None",
+                "/// @return void",
+                "/// @retval None",
+            }),
+        })
+
         local c80 = s("c80", {
             t({
                 "//==============================================================================",
@@ -2082,8 +2100,8 @@ add_lazy({
             f(get_guard),
         })
 
-        ls.add_snippets("c", { doxy, c80, h80, c0, h0, c100 })
-        ls.add_snippets("cpp", { doxy, c80, h80, c0, h0, h100 })
+        ls.add_snippets("c", { doxy, adoxy, c80, h80, ac80, ah80, c0, h0, c100 })
+        ls.add_snippets("cpp", { doxy, adoxy, c80, h80, c0, h0, h100 })
 
         -- Trigger and Jump keymaps
         vim.keymap.set({ "i", "s" }, "<Tab>", function()
