@@ -1474,6 +1474,7 @@ add_lazy({
                 "/// @param[in,out] None",
                 "/// @param[out] None",
                 "/// @return void",
+                "/// @retval None",
             }),
         })
 
