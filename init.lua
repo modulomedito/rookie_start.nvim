@@ -844,6 +844,9 @@ add_lazy({ "fedorenchik/VimCalc3" })
 -- Surround with characters
 add_lazy({ "tpope/vim-surround" })
 
+-- Text alignment
+add_lazy({ "junegunn/vim-easy-align" })
+
 -- Syntax highlight
 add_lazy({ "vim-polyglot/vim-polyglot" })
 
