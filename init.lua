@@ -1485,19 +1485,20 @@ add_lazy({
 
         local adoxy = s("adoxy", {
             t({
-                "/// @brief",
+                "/// @par AUTOSAR API",
+                "/// - Service name:",
+                "/// - Syntax:",
+                "/// - Service ID[hex]:",
+                "/// - Sync/Async:",
+                "/// - Reentrancy:",
+                "/// - Parameters (in):",
+                "/// - Parameters (inout):",
+                "/// - Parameters (out):",
+                "/// - Return value:",
+                "/// - Description:",
+                "/// - Available via:",
                 "/// @details",
-                "/// @par Traceability:",
-                "/// @par Syntax:",
-                "/// @par Description:",
-                "/// @par Service ID:",
-                "/// @par Sync/Async:",
-                "/// @par Reentrancy:",
-                "/// @param[in] None",
-                "/// @param[in,out] None",
-                "/// @param[out] None",
-                "/// @return void",
-                "/// @retval None",
+                "/// - Traceability:",
             }),
         })
 
