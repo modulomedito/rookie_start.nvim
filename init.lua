@@ -85,6 +85,7 @@ vim.o.writebackup = false
 vim.opt.colorcolumn = { "81", "101", "121" }
 vim.opt.complete = { ".", "w", "b", "u", "t" }
 vim.opt.completeopt = { "menuone", "noselect", "popup" }
+vim.opt.fillchars:append({ eob = " " })
 vim.opt.formatoptions:append("mB")
 vim.opt.listchars = {
     tab = "» ",
@@ -666,6 +667,35 @@ vim.api.nvim_create_autocmd("FileType", {
             desc = "Help: Jump to tag",
         })
     end,
+})
+
+local function apply_warp_transparency()
+    if vim.env.TERM_PROGRAM == "WarpTerminal" then
+        local transparent_groups = {
+            "Normal",
+            "NormalNC",
+            "NormalFloat",
+            "FloatBorder",
+            "SignColumn",
+            "LineNr",
+            "CursorLineNr",
+            "Folded",
+            "NonText",
+            "SpecialKey",
+            "EndOfBuffer",
+            "MsgArea",
+        }
+
+        for _, group in ipairs(transparent_groups) do
+            vim.api.nvim_set_hl(0, group, { bg = "none", ctermbg = "none" })
+        end
+    end
+end
+
+-- Run on startup and re-apply whenever a colorscheme changes
+vim.api.nvim_create_autocmd({ "VimEnter", "ColorScheme" }, {
+    pattern = "*",
+    callback = apply_warp_transparency,
 })
 
 -- =================================================================================================
@@ -1320,6 +1350,8 @@ add_lazy({
     config = function()
         require("tokyonight").setup({
             styles = {
+                sidebars = "transparent",
+                floats = "transparent",
                 comments = {
                     italic = false,
                 },
