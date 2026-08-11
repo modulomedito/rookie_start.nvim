@@ -892,6 +892,13 @@ add_lazy({
     },
 })
 
+-- Mardkown Table Wrap
+add_lazy({
+    "ice345/markdown-table-wrap.nvim",
+    ft = { "markdown", "quarto", "rmd" },
+    opts = {},
+})
+
 -- Draw ASCII graph
 add_lazy({
     "jbyuki/venn.nvim",
