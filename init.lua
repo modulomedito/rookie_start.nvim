@@ -897,6 +897,69 @@ add_lazy({
     "ice345/markdown-table-wrap.nvim",
     ft = { "markdown", "quarto", "rmd" },
     opts = {},
+    keys = {
+        {
+            "<leader>mt",
+            "<cmd>MarkdownTableTogglePreview<cr>",
+            desc = "Toggle Markdown table preview",
+        },
+        { "<leader>mp", "<cmd>MarkdownTablePreview<cr>", desc = "Preview Markdown tables" },
+        {
+            "<leader>mf",
+            "<cmd>MarkdownTableFloatPreview<cr>",
+            desc = "Float Markdown table preview",
+        },
+        {
+            "<leader>mr",
+            "<cmd>MarkdownTableToggleReader<cr>",
+            desc = "Toggle Markdown table reader",
+        },
+        {
+            "<leader>mi",
+            "<cmd>MarkdownTableToggleInline<cr>",
+            desc = "Toggle Markdown table inline view",
+        },
+        { "<leader>me", "<cmd>MarkdownTableEditSource<cr>", desc = "Edit Markdown source" },
+        {
+            "<leader>mc",
+            "<cmd>MarkdownTableClosePreview<cr>",
+            desc = "Close Markdown table preview",
+        },
+        {
+            "<leader>mT",
+            "<cmd>MarkdownTableToggleAutoPreview<cr>",
+            desc = "Toggle auto Markdown table preview",
+        },
+        {
+            "<leader>mq",
+            "<cmd>MarkdownTableToggleInlineViewport<cr>",
+            desc = "Toggle inline table viewport",
+        },
+        { "]c", "<cmd>MarkdownTableNextCell<cr>", desc = "Next table cell" },
+        { "[c", "<cmd>MarkdownTablePrevCell<cr>", desc = "Previous table cell" },
+        { "]r", "<cmd>MarkdownTableNextRow<cr>", desc = "Next table row" },
+        { "[r", "<cmd>MarkdownTablePrevRow<cr>", desc = "Previous table row" },
+        {
+            "<leader>mj",
+            function()
+                require("markdown-table-wrap").scroll_view(vim.v.count1)
+            end,
+            desc = "Scroll rendered table down",
+        },
+        {
+            "<leader>mk",
+            function()
+                require("markdown-table-wrap").scroll_view(-vim.v.count1)
+            end,
+            desc = "Scroll rendered table up",
+        },
+        { "<leader>mgg", "<cmd>MarkdownTableScrollTop<cr>", desc = "Scroll rendered table to top" },
+        {
+            "<leader>mG",
+            "<cmd>MarkdownTableScrollBottom<cr>",
+            desc = "Scroll rendered table to bottom",
+        },
+    },
 })
 
 -- Draw ASCII graph
