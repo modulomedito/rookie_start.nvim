@@ -20,6 +20,7 @@ require("secret")
 -- NVIM_PLUGIN_MANAGER
 -- NVIM_PLUGINS
 -- NVIM_LAZY_SETUP
+-- NVIM_SCRIPTS
 -- MY_NOTES
 
 -- =================================================================================================
@@ -855,7 +856,12 @@ add_lazy({ "folke/zen-mode.nvim" })
 add_lazy({ "NMAC427/guess-indent.nvim" })
 
 -- CJK character formatter
-add_lazy({ "hotoo/pangu.vim" })
+add_lazy({
+    "hotoo/pangu.vim",
+    config = function()
+        vim.g.pangu_rule_fullwidth_punctuation = 0
+    end,
+})
 
 -- Highlight words/patterns
 add_lazy({
@@ -2267,6 +2273,175 @@ require("lazy").setup(lazy_plugins, {
             lazy = "💤 ",
         },
     },
+})
+
+-- =================================================================================================
+-- NVIM_SCRIPTS
+-- =================================================================================================
+local function paste_as_markdown_table()
+    local content = vim.fn.getreg("+")
+    if content == "" then
+        vim.notify("Clipboard is empty", vim.log.levels.WARN)
+        return
+    end
+
+    local rows = {}
+    local current_row = {}
+    local current_field = {}
+    local in_quotes = false
+    local i = 1
+    local len = #content
+
+    while i <= len do
+        local c = content:sub(i, i)
+        local next_c = content:sub(i + 1, i + 1)
+
+        if in_quotes then
+            if c == '"' then
+                if next_c == '"' then
+                    table.insert(current_field, '"')
+                    i = i + 2
+                else
+                    in_quotes = false
+                    i = i + 1
+                end
+            elseif c == "\r" then
+                if next_c == "\n" then
+                    table.insert(current_field, "\n")
+                    i = i + 2
+                else
+                    table.insert(current_field, "\n")
+                    i = i + 1
+                end
+            else
+                table.insert(current_field, c)
+                i = i + 1
+            end
+        else
+            if c == '"' and #current_field == 0 then
+                in_quotes = true
+                i = i + 1
+            elseif c == "\t" then
+                local field_str = table.concat(current_field)
+                field_str = field_str:gsub("^%s+", ""):gsub("%s+$", "")
+                table.insert(current_row, field_str)
+                current_field = {}
+                i = i + 1
+            elseif c == "\r" then
+                if next_c == "\n" then
+                    i = i + 2
+                else
+                    i = i + 1
+                end
+                local field_str = table.concat(current_field)
+                field_str = field_str:gsub("^%s+", ""):gsub("%s+$", "")
+                table.insert(current_row, field_str)
+                current_field = {}
+                if #current_row > 0 or i <= len then
+                    table.insert(rows, current_row)
+                end
+                current_row = {}
+            elseif c == "\n" then
+                i = i + 1
+                local field_str = table.concat(current_field)
+                field_str = field_str:gsub("^%s+", ""):gsub("%s+$", "")
+                table.insert(current_row, field_str)
+                current_field = {}
+                if #current_row > 0 or i <= len then
+                    table.insert(rows, current_row)
+                end
+                current_row = {}
+            else
+                table.insert(current_field, c)
+                i = i + 1
+            end
+        end
+    end
+
+    if #current_field > 0 or #current_row > 0 then
+        local field_str = table.concat(current_field)
+        field_str = field_str:gsub("^%s+", ""):gsub("%s+$", "")
+        table.insert(current_row, field_str)
+        if #current_row > 0 then
+            table.insert(rows, current_row)
+        end
+    end
+
+    if #rows == 0 then
+        vim.notify("No valid content in clipboard", vim.log.levels.WARN)
+        return
+    end
+
+    local max_cols = 0
+    for _, row in ipairs(rows) do
+        if #row > max_cols then
+            max_cols = #row
+        end
+    end
+
+    for _, row in ipairs(rows) do
+        while #row < max_cols do
+            table.insert(row, "")
+        end
+    end
+
+    local col_widths = {}
+    for col = 1, max_cols do
+        local max_len = 0
+        for _, row in ipairs(rows) do
+            local cell_text = row[col] or ""
+            cell_text = cell_text:gsub("\n", "<br>")
+            local len = vim.fn.strdisplaywidth(cell_text)
+            if len > max_len then
+                max_len = len
+            end
+        end
+        col_widths[col] = math.max(max_len, 3)
+    end
+
+    local function pad_cell(text, width)
+        local text_width = vim.fn.strdisplaywidth(text)
+        local padding = width - text_width
+        return " " .. text .. string.rep(" ", padding) .. " "
+    end
+
+    local md_lines = {}
+    local function render_row(row_data)
+        local cells = {}
+        for col = 1, max_cols do
+            local cell_text = (row_data[col] or ""):gsub("\n", "<br>")
+            table.insert(cells, pad_cell(cell_text, col_widths[col]))
+        end
+        table.insert(md_lines, "|" .. table.concat(cells, "|") .. "|")
+    end
+
+    local header_cells = {}
+    for col = 1, max_cols do
+        table.insert(header_cells, pad_cell("", col_widths[col]))
+    end
+    table.insert(md_lines, "|" .. table.concat(header_cells, "|") .. "|")
+
+    local sep_cells = {}
+    for col = 1, max_cols do
+        table.insert(sep_cells, " " .. string.rep("-", col_widths[col]) .. " ")
+    end
+    table.insert(md_lines, "|" .. table.concat(sep_cells, "|") .. "|")
+
+    for i = 1, #rows do
+        render_row(rows[i])
+    end
+
+    local bufnr = vim.api.nvim_get_current_buf()
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    local row = cursor[1] - 1
+
+    vim.api.nvim_buf_set_lines(bufnr, row, row, false, md_lines)
+    vim.api.nvim_win_set_cursor(0, { row + #md_lines, 0 })
+    vim.notify("Pasted " .. #rows .. " rows x " .. max_cols .. " cols as Markdown table")
+end
+
+vim.api.nvim_create_user_command("PasteAsMarkdownTable", paste_as_markdown_table, {
+    desc = "Convert Excel clipboard content to Markdown table and paste",
 })
 
 -- =================================================================================================
