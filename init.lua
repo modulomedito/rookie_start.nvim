@@ -1276,6 +1276,7 @@ add_lazy({
                 vim.cmd("normal! m6")
                 local saved_vcol = vim.fn.virtcol(".")
                 vim.cmd(range .. "s/，/, /ge")
+                vim.cmd(range .. "s/、/, /ge")
                 vim.cmd("noh")
                 vim.cmd("normal! `6")
                 local lnum = vim.fn.line(".")
@@ -1315,7 +1316,37 @@ add_lazy({
             desc = "Convert full-width 。 to half-width . ",
         },
         {
-            "<leader>fo:",
+            "<leader>fo)",
+            function()
+                local mode = vim.fn.mode()
+                local range
+                if mode == "v" or mode == "V" or mode == "\x16" then
+                    local start_lnum = vim.fn.line("'<")
+                    local end_lnum = vim.fn.line("'>")
+                    range = tostring(start_lnum) .. "," .. tostring(end_lnum)
+                    vim.api.nvim_feedkeys(
+                        vim.api.nvim_replace_termcodes("<Esc>", true, false, true),
+                        "n",
+                        false
+                    )
+                else
+                    range = "%"
+                end
+                vim.cmd("normal! m6")
+                local saved_vcol = vim.fn.virtcol(".")
+                vim.cmd(range .. "s/（/ (/ge")
+                vim.cmd(range .. "s/）/) /ge")
+                vim.cmd("noh")
+                vim.cmd("normal! `6")
+                local lnum = vim.fn.line(".")
+                local byte_col = vim.fn.virtcol2col(0, lnum, saved_vcol) or 1
+                vim.fn.cursor(lnum, math.max(byte_col, 1))
+            end,
+            mode = { "n", "v" },
+            desc = "Convert full-width （） to half-width ( )",
+        },
+        {
+            "<leader>fo;",
             function()
                 local mode = vim.fn.mode()
                 local range
@@ -1334,6 +1365,7 @@ add_lazy({
                 vim.cmd("normal! m6")
                 local saved_vcol = vim.fn.virtcol(".")
                 vim.cmd(range .. "s/：/: /ge")
+                vim.cmd(range .. "s/；/; /ge")
                 vim.cmd("noh")
                 vim.cmd("normal! `6")
                 local lnum = vim.fn.line(".")
