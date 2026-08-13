@@ -632,7 +632,7 @@ vim.api.nvim_create_autocmd("FileType", {
     group = group_markdown,
     pattern = "markdown",
     callback = function()
-        vim.opt_local.wrap = true
+        vim.opt_local.wrap = false
         vim.cmd([[highlight! link @text.emphasis.markdown_inline Normal]])
         vim.cmd([[highlight! link @markup.italic.markdown_inline Normal]])
     end,
