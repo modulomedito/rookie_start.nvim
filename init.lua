@@ -2460,7 +2460,7 @@ vim.api.nvim_create_user_command("PasteAsMarkdownTable", paste_as_markdown_table
     desc = "Convert Excel clipboard content to Markdown table and paste",
 })
 
-local function copy_as_excel_table(opts)
+local function copy_as_csv_table(opts)
     local start_line, end_line
     if opts and opts.line1 and opts.line2 then
         start_line = math.min(opts.line1, opts.line2) - 1
@@ -2529,30 +2529,30 @@ local function copy_as_excel_table(opts)
         return
     end
 
-    local excel_lines = {}
+    local csv_lines = {}
     for _, row in ipairs(rows) do
         while #row < max_cols do
             table.insert(row, "")
         end
         local cells = {}
         for _, cell in ipairs(row) do
-            if cell:find("\n") or cell:find("\t") or cell:find('"') then
+            if cell:find("\n") or cell:find(",") or cell:find('"') then
                 local escaped = cell:gsub('"', '""')
                 table.insert(cells, '"' .. escaped .. '"')
             else
                 table.insert(cells, cell)
             end
         end
-        table.insert(excel_lines, table.concat(cells, "\t"))
+        table.insert(csv_lines, table.concat(cells, ","))
     end
 
-    local content = table.concat(excel_lines, "\r\n")
+    local content = table.concat(csv_lines, "\r\n")
     vim.fn.setreg("+", content)
-    vim.notify("Copied " .. #rows .. " rows x " .. max_cols .. " cols as Excel table to clipboard")
+    vim.notify("Copied " .. #rows .. " rows x " .. max_cols .. " cols as CSV table to clipboard")
 end
 
-vim.api.nvim_create_user_command("CopyAsExcelTable", copy_as_excel_table, {
-    desc = "Convert selected markdown table to Excel format and copy to clipboard",
+vim.api.nvim_create_user_command("CopyAsCsvTable", copy_as_csv_table, {
+    desc = "Convert selected markdown table to CSV format and copy to clipboard",
     range = true,
 })
 
