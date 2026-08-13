@@ -902,7 +902,9 @@ add_lazy({
 add_lazy({
     "ice345/markdown-table-wrap.nvim",
     ft = { "markdown", "quarto", "rmd" },
-    opts = {},
+    opts = {
+        auto_preview = false,
+    },
     keys = {
         {
             "<leader>mt",
@@ -2292,6 +2294,27 @@ local function paste_as_markdown_table()
     local i = 1
     local len = #content
 
+    local function is_field_all_whitespace()
+        for _, ch in ipairs(current_field) do
+            if not ch:match("^%s$") then
+                return false
+            end
+        end
+        return true
+    end
+
+    local function finalize_field()
+        local field_str = table.concat(current_field)
+        field_str = field_str:gsub("^%s+", ""):gsub("%s+$", "")
+        if #field_str >= 2 and field_str:sub(1, 1) == '"' and field_str:sub(-1, -1) == '"' then
+            local inner = field_str:sub(2, -2)
+            inner = inner:gsub('""', '"')
+            field_str = inner
+        end
+        table.insert(current_row, field_str)
+        current_field = {}
+    end
+
     while i <= len do
         local c = content:sub(i, i)
         local next_c = content:sub(i + 1, i + 1)
@@ -2313,19 +2336,20 @@ local function paste_as_markdown_table()
                     table.insert(current_field, "\n")
                     i = i + 1
                 end
+            elseif c == "\n" then
+                table.insert(current_field, "\n")
+                i = i + 1
             else
                 table.insert(current_field, c)
                 i = i + 1
             end
         else
-            if c == '"' and #current_field == 0 then
+            if c == '"' and is_field_all_whitespace() then
+                current_field = {}
                 in_quotes = true
                 i = i + 1
             elseif c == "\t" then
-                local field_str = table.concat(current_field)
-                field_str = field_str:gsub("^%s+", ""):gsub("%s+$", "")
-                table.insert(current_row, field_str)
-                current_field = {}
+                finalize_field()
                 i = i + 1
             elseif c == "\r" then
                 if next_c == "\n" then
@@ -2333,20 +2357,14 @@ local function paste_as_markdown_table()
                 else
                     i = i + 1
                 end
-                local field_str = table.concat(current_field)
-                field_str = field_str:gsub("^%s+", ""):gsub("%s+$", "")
-                table.insert(current_row, field_str)
-                current_field = {}
+                finalize_field()
                 if #current_row > 0 or i <= len then
                     table.insert(rows, current_row)
                 end
                 current_row = {}
             elseif c == "\n" then
                 i = i + 1
-                local field_str = table.concat(current_field)
-                field_str = field_str:gsub("^%s+", ""):gsub("%s+$", "")
-                table.insert(current_row, field_str)
-                current_field = {}
+                finalize_field()
                 if #current_row > 0 or i <= len then
                     table.insert(rows, current_row)
                 end
@@ -2359,9 +2377,7 @@ local function paste_as_markdown_table()
     end
 
     if #current_field > 0 or #current_row > 0 then
-        local field_str = table.concat(current_field)
-        field_str = field_str:gsub("^%s+", ""):gsub("%s+$", "")
-        table.insert(current_row, field_str)
+        finalize_field()
         if #current_row > 0 then
             table.insert(rows, current_row)
         end
@@ -2442,6 +2458,102 @@ end
 
 vim.api.nvim_create_user_command("PasteAsMarkdownTable", paste_as_markdown_table, {
     desc = "Convert Excel clipboard content to Markdown table and paste",
+})
+
+local function copy_as_excel_table(opts)
+    local start_line, end_line
+    if opts and opts.line1 and opts.line2 then
+        start_line = math.min(opts.line1, opts.line2) - 1
+        end_line = math.max(opts.line1, opts.line2)
+    else
+        local start_pos = vim.fn.getpos("'<")
+        local end_pos = vim.fn.getpos("'>")
+        if start_pos[2] == 0 and end_pos[2] == 0 then
+            vim.notify("Please select a markdown table in visual mode first", vim.log.levels.WARN)
+            return
+        end
+        start_line = math.min(start_pos[2], end_pos[2]) - 1
+        end_line = math.max(start_pos[2], end_pos[2])
+    end
+
+    if end_line <= start_line then
+        vim.notify("Selection is empty", vim.log.levels.WARN)
+        return
+    end
+
+    local lines = vim.api.nvim_buf_get_lines(0, start_line, end_line, false)
+
+    local rows = {}
+    local max_cols = 0
+    for _, line in ipairs(lines) do
+        local trimmed = line:gsub("^%s+", ""):gsub("%s+$", "")
+        if trimmed == "" then
+            goto continue
+        end
+        if not trimmed:match("^|.*|$") then
+            goto continue
+        end
+        local inner = trimmed:sub(2, -2)
+        local is_separator = true
+        for cell in vim.gsplit(inner, "|", { plain = true }) do
+            local cell_trimmed = cell:gsub("^%s+", ""):gsub("%s+$", "")
+            if
+                cell_trimmed ~= ""
+                and not cell_trimmed:match("^%-+$")
+                and not cell_trimmed:match("^:%-+%:?$")
+                and not cell_trimmed:match("^%-+%:?$")
+            then
+                is_separator = false
+                break
+            end
+        end
+        if is_separator then
+            goto continue
+        end
+
+        local cols = {}
+        for cell in vim.gsplit(inner, "|", { plain = true }) do
+            local cell_text = cell:gsub("^%s+", ""):gsub("%s+$", "")
+            cell_text = cell_text:gsub("<br>", "\n")
+            table.insert(cols, cell_text)
+        end
+        if #cols > max_cols then
+            max_cols = #cols
+        end
+        table.insert(rows, cols)
+        ::continue::
+    end
+
+    if #rows == 0 then
+        vim.notify("No valid markdown table rows found in selection", vim.log.levels.WARN)
+        return
+    end
+
+    local excel_lines = {}
+    for _, row in ipairs(rows) do
+        while #row < max_cols do
+            table.insert(row, "")
+        end
+        local cells = {}
+        for _, cell in ipairs(row) do
+            if cell:find("\n") or cell:find("\t") or cell:find('"') then
+                local escaped = cell:gsub('"', '""')
+                table.insert(cells, '"' .. escaped .. '"')
+            else
+                table.insert(cells, cell)
+            end
+        end
+        table.insert(excel_lines, table.concat(cells, "\t"))
+    end
+
+    local content = table.concat(excel_lines, "\r\n")
+    vim.fn.setreg("+", content)
+    vim.notify("Copied " .. #rows .. " rows x " .. max_cols .. " cols as Excel table to clipboard")
+end
+
+vim.api.nvim_create_user_command("CopyAsExcelTable", copy_as_excel_table, {
+    desc = "Convert selected markdown table to Excel format and copy to clipboard",
+    range = true,
 })
 
 -- =================================================================================================
