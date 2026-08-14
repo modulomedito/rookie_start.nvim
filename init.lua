@@ -855,6 +855,9 @@ add_lazy({ "folke/zen-mode.nvim" })
 
 add_lazy({ "NMAC427/guess-indent.nvim" })
 
+-- Easy motion
+add_lazy({ "easymotion/vim-easymotion" })
+
 -- CJK character formatter
 add_lazy({
     "hotoo/pangu.vim",
