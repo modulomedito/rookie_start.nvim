@@ -909,6 +909,17 @@ add_lazy({
     },
 })
 
+add_lazy({
+    "brianhuster/live-preview.nvim",
+    dependencies = {
+        -- You can choose one of the following pickers
+        "nvim-telescope/telescope.nvim",
+        "ibhagwan/fzf-lua",
+        "echasnovski/mini.pick",
+        "folke/snacks.nvim",
+    },
+})
+
 -- Mardkown Table Wrap
 add_lazy({
     "ice345/markdown-table-wrap.nvim",
