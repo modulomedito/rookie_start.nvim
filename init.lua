@@ -743,6 +743,14 @@ add_lazy({
 })
 
 add_lazy({
+    "modulomedito/rookie_mdlint.nvim",
+    dependencies = { "stevearc/conform.nvim" },
+    config = function()
+        require("rookie_mdlint").setup()
+    end,
+})
+
+add_lazy({
     "modulomedito/rookie_enhance_nvimtree.nvim",
     dependencies = { "nvim-tree/nvim-tree.lua" },
     config = function()
@@ -1369,12 +1377,6 @@ add_lazy({
                 -- Remove trailing whitespaces
                 vim.cmd("%s/\\s\\+$//e")
                 vim.cmd("%s/\\r\\+$//e")
-                -- Markdown: insert space between Chinese and English
-                if vim.bo.filetype == "markdown" then
-                    vim.cmd("%s/\\([\\u4e00-\\u9fa5]\\)\\([a-zA-Z0-9]\\)/\\1 \\2/ge")
-                    vim.cmd("%s/\\([a-zA-Z0-9]\\)\\([\\u4e00-\\u9fa5]\\)/\\1 \\2/ge")
-                    vim.cmd("%s/,\\([\\u4e00-\\u9fa5]\\)/, \\1/ge")
-                end
                 -- LSP format
                 local ok, conform = pcall(require, "conform")
                 if ok then
@@ -1413,12 +1415,6 @@ add_lazy({
                 -- Remove trailing whitespaces
                 vim.cmd("%s/\\s\\+$//e")
                 vim.cmd("%s/\\r\\+$//e")
-                -- Markdown: insert space between Chinese and English
-                if vim.bo.filetype == "markdown" then
-                    vim.cmd("%s/\\([\\u4e00-\\u9fa5]\\)\\([a-zA-Z0-9]\\)/\\1 \\2/ge")
-                    vim.cmd("%s/\\([a-zA-Z0-9]\\)\\([\\u4e00-\\u9fa5]\\)/\\1 \\2/ge")
-                    vim.cmd("%s/,\\([\\u4e00-\\u9fa5]\\)/, \\1/ge")
-                end
                 -- LSP format
                 local ok, conform = pcall(require, "conform")
                 if ok then
@@ -1457,11 +1453,6 @@ add_lazy({
             cpp = {
                 "clang-format",
                 "uncrustify",
-                stop_after_first = true,
-            },
-            markdown = {
-                "prettier",
-                "markdownlint",
                 stop_after_first = true,
             },
             python = { "autopep8", "black", "isort" },
