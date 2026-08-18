@@ -670,33 +670,33 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
-local function apply_warp_transparency()
-    if vim.env.TERM_PROGRAM == "WarpTerminal" then
-        local transparent_groups = {
-            "Normal",
-            "NormalNC",
-            "NormalFloat",
-            "FloatBorder",
-            "SignColumn",
-            "LineNr",
-            "CursorLineNr",
-            "Folded",
-            "NonText",
-            "SpecialKey",
-            "EndOfBuffer",
-            "MsgArea",
-        }
+local function apply_transparency()
+    -- if vim.env.TERM_PROGRAM == "WarpTerminal" then
+    local transparent_groups = {
+        "Normal",
+        "NormalNC",
+        "NormalFloat",
+        "FloatBorder",
+        "SignColumn",
+        "LineNr",
+        "CursorLineNr",
+        "Folded",
+        "NonText",
+        "SpecialKey",
+        "EndOfBuffer",
+        "MsgArea",
+    }
 
-        for _, group in ipairs(transparent_groups) do
-            vim.api.nvim_set_hl(0, group, { bg = "none", ctermbg = "none" })
-        end
+    for _, group in ipairs(transparent_groups) do
+        vim.api.nvim_set_hl(0, group, { bg = "none", ctermbg = "none" })
     end
+    -- end
 end
 
 -- Run on startup and re-apply whenever a colorscheme changes
 vim.api.nvim_create_autocmd({ "VimEnter", "ColorScheme" }, {
     pattern = "*",
-    callback = apply_warp_transparency,
+    callback = apply_transparency,
 })
 
 -- =================================================================================================
