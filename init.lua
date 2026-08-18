@@ -965,7 +965,7 @@ add_lazy({
             "<cmd>MarkdownTableToggleInlineViewport<cr>",
             desc = "Toggle inline table viewport",
         },
-        { "<Tab>", "<cmd>MarkdownTableNextCell<cr>", desc = "Next table cell" },
+        { "<leader><Tab>", "<cmd>MarkdownTableNextCell<cr>", desc = "Next table cell" },
         { "<s-Tab>", "<cmd>MarkdownTablePrevCell<cr>", desc = "Previous table cell" },
         { "]r", "<cmd>MarkdownTableNextRow<cr>", desc = "Next table row" },
         { "[r", "<cmd>MarkdownTablePrevRow<cr>", desc = "Previous table row" },
