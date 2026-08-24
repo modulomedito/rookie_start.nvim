@@ -838,6 +838,8 @@ add_lazy({
 --     end,
 -- })
 
+add_lazy({ "dhruvasagar/vim-table-mode" })
+
 add_lazy({
     "modulomedito/rookie_lsp.nvim",
     dependencies = {
