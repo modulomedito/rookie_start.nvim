@@ -779,6 +779,13 @@ add_lazy({
     end,
 })
 
+-- add_lazy({
+--     "modulomedito/rookie_outliner.nvim",
+--     config = function()
+--         require("rookie_c").setup()
+--     end,
+-- })
+
 add_lazy({
     "modulomedito/rookie_ssl.nvim",
     config = function()
