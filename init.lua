@@ -310,10 +310,10 @@ vim.keymap.set("n", "<leader>clr", ":%bd<bar>e #<bar>normal `<CR>", {
     silent = true,
     desc = "Clear all buffers but current",
 })
-vim.keymap.set("n", "<leader>lh", ":noh<CR>", {
-    silent = true,
-    desc = "Clear highlights",
-})
+-- vim.keymap.set("n", "<leader>lh", ":noh<CR>", {
+--     silent = true,
+--     desc = "Clear highlights",
+-- })
 vim.keymap.set("n", "<leader>da", function()
     local date = os.date("%Y-%m-%d-%w")
     vim.api.nvim_put({ date }, "c", true, true)
@@ -890,6 +890,22 @@ add_lazy({
         vim.keymap.set({ "n", "v" }, "f<Del>", ":<C-u>Hi clear<CR>", {
             silent = true,
             desc = "Clear highlighters",
+        })
+        vim.keymap.set({ "n" }, "<leader>lh", ":Hi{<CR>", {
+            silent = true,
+            desc = "Left highlighters",
+        })
+        vim.keymap.set({ "n" }, "<leader>ll", ":Hi}<CR>", {
+            silent = true,
+            desc = "Right highlighters",
+        })
+        vim.keymap.set({ "n" }, "<leader>lH", ":Hi[<CR>", {
+            silent = true,
+            desc = "Left same color highlighters",
+        })
+        vim.keymap.set({ "n" }, "<leader>lL", ":Hi]<CR>", {
+            silent = true,
+            desc = "Right same color highlighters",
         })
     end,
 })
