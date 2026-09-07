@@ -2402,6 +2402,19 @@ add_lazy({
     end,
 })
 
+add_lazy({
+    "olimorris/codecompanion.nvim",
+    version = "^19.0.0",
+    opts = {},
+    dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+        require("codecompanion").setup(require("secret").codecompanion_setup)
+    end,
+})
+
 -- =================================================================================================
 -- NVIM_LAZY_SETUP
 -- =================================================================================================
