@@ -1546,6 +1546,20 @@ add_lazy({
     opts = {
         keymap = {
             preset = "enter",
+            -- In the CodeCompanion chat buffer Tab accepts the completion, like <CR>;
+            -- everywhere else Tab keeps jumping through snippets
+            ["<Tab>"] = {
+                function(cmp)
+                    if cmp.snippet_active() then
+                        return cmp.snippet_forward()
+                    end
+                    if vim.bo.filetype == "codecompanion" then
+                        return cmp.select_and_accept()
+                    end
+                end,
+                "snippet_forward",
+                "fallback",
+            },
         },
         appearance = {
             nerd_font_variant = "mono",
@@ -2412,6 +2426,30 @@ add_lazy({
     },
     config = function()
         require("codecompanion").setup(require("secret").codecompanion_setup)
+        vim.keymap.set(
+            { "n", "v" },
+            "<leader>ca",
+            "<cmd>CodeCompanionActions<cr>",
+            { desc = "CodeCompanion Actions" }
+        )
+        vim.keymap.set(
+            { "n", "v" },
+            "<leader>ci",
+            "<cmd>CodeCompanion<cr>",
+            { desc = "CodeCompanion Inline Edit" }
+        )
+        vim.keymap.set(
+            { "n", "v" },
+            "<leader>cc",
+            "<cmd>CodeCompanionChat Toggle<cr>",
+            { desc = "CodeCompanion Chat Toggle" }
+        )
+        vim.keymap.set(
+            "v",
+            "<leader>cs",
+            "<cmd>CodeCompanionChat Add<cr>",
+            { desc = "CodeCompanion Send Selection" }
+        )
     end,
 })
 
