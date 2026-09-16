@@ -755,6 +755,12 @@ add_lazy({
     dependencies = { "nvim-tree/nvim-tree.lua" },
     config = function()
         require("rookie_enhance_nvimtree").setup()
+        vim.api.nvim_create_autocmd("User", {
+            pattern = "OilActionsPost",
+            callback = function()
+                require("nvim-tree.api").tree.reload()
+            end,
+        })
     end,
 })
 
