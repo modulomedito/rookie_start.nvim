@@ -1528,6 +1528,15 @@ add_lazy({
                 stop_after_first = true,
             },
             python = { "autopep8", "black", "isort" },
+            markdown = { "prettier" },
+        },
+        formatters = {
+            prettier = {
+                prepend_args = { "--tab-width", "4" },
+            },
+            prettierd = {
+                prepend_args = { "--tab-width", "4" },
+            },
         },
     },
 })
