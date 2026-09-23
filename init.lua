@@ -474,6 +474,41 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {
 --     desc = "Exit terminal mode",
 -- })
 
+-- Copy location(s) — works in normal and (line) visual mode
+vim.keymap.set({ "n", "x" }, "<leader>aic", function()
+    local path = vim.fn.expand("%:.") -- path relative to cwd
+    if path == "" then
+        path = "[No Name]"
+    end
+    local mode = vim.fn.mode()
+    local pos
+    if mode == "v" or mode == "V" or mode == "\22" then
+        local l1 = vim.fn.line("v") -- anchor of selection
+        local l2 = vim.fn.line(".") -- cursor / other end
+        if l1 > l2 then
+            l1, l2 = l2, l1
+        end
+        if l1 == l2 then
+            pos = ":" .. l1
+        else
+            pos = ":" .. l1 .. "-" .. l2
+        end
+    else
+        pos = ":" .. vim.fn.line(".")
+    end
+    local text = "@" .. path .. " " .. pos .. " "
+    vim.fn.setreg("+", text)
+    vim.notify("Copied: " .. text)
+    -- Leave visual mode
+    if mode == "v" or mode == "V" or mode == "\22" then
+        vim.api.nvim_feedkeys(
+            vim.api.nvim_replace_termcodes("<Esc>", true, false, true),
+            "n",
+            false
+        )
+    end
+end, { desc = "Copy relative path + line(s)" })
+
 -- =================================================================================================
 -- NVIM_AUTOCMDS
 -- =================================================================================================
