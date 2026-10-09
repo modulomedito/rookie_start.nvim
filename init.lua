@@ -632,6 +632,7 @@ vim.api.nvim_create_autocmd("FileType", {
         -- setlocal iskeyword+=- iskeyword+=/
         vim.opt_local.iskeyword:append("-")
         vim.opt_local.iskeyword:append("/")
+        vim.opt_local.iskeyword:append(".")
 
         -- nnoremap <silent><buffer> gl f)b
         vim.keymap.set("n", "gl", "f)b", {
