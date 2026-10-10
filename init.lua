@@ -771,7 +771,7 @@ add_lazy({
         "sindrets/diffview.nvim",
         "lewis6991/gitsigns.nvim",
         "modulomedito/gitgraph.nvim",
-        "tpope/vim-fugitive",
+        "modulomedito/vim-fugitive",
     },
     config = function()
         require("rookie_git").setup()
