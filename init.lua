@@ -516,6 +516,11 @@ local binary_group = vim.api.nvim_create_augroup("Binary", {
     clear = true,
 })
 
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+    pattern = { "*.capl", "*.can" },
+    command = "set filetype=c",
+})
+
 vim.api.nvim_create_autocmd("BufReadPre", {
     group = binary_group,
     pattern = "*.bin",
