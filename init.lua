@@ -2511,7 +2511,7 @@ add_lazy({
 
 add_lazy({
     "mistricky/codesnap.nvim",
-    tag = "v2.0.5",
+    tag = "v2.1.1",
     config = function()
         require("codesnap").setup({
             show_line_number = true,
