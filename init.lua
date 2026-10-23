@@ -335,6 +335,11 @@ vim.keymap.set("n", "go", '"0yi):!start <C-r>0<CR>', {
     desc = "Open link under cursor (Windows)",
 })
 
+-- Date insert
+vim.keymap.set("ia", "xdate", function()
+    return vim.fn.strftime("%Y-%m-%d-%u")
+end, { expr = true, buffer = true })
+
 -- Git
 vim.keymap.set("n", "<leader>sync", function()
     vim.cmd("wa")
