@@ -336,9 +336,9 @@ vim.keymap.set("n", "go", '"0yi):!start <C-r>0<CR>', {
 })
 
 -- Date insert
-vim.keymap.set("ia", "xdate", function()
-    return vim.fn.strftime("%Y-%m-%d-%u")
-end, { expr = true, buffer = true })
+vim.keymap.set("ia", "xdt", function()
+    return os.date("%Y-%m-%d-%u")
+end, { expr = true, desc = "Insert current date with -5 suffix" })
 
 -- Git
 vim.keymap.set("n", "<leader>sync", function()
