@@ -101,7 +101,7 @@ end)
 
 if vim.fn.has("gui_running") == 1 or vim.g.neovide then
     if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
-        vim.o.guifont = "Agave Nerd Font:h12"
+        vim.o.guifont = "Agave Nerd Font:h10"
     else
         vim.o.guifont = "Agave Nerd Font:h16"
     end
@@ -375,7 +375,8 @@ vim.keymap.set("n", "<leader>sync", function()
         { "git", "push" },
         { "git", "fetch" },
     }, function()
-        vim.cmd("!git log --oneline --graph --all --decorate")
+        -- vim.cmd("!git log --oneline --graph --all --decorate")
+        vim.notify("Git sync done", vim.log.levels.INFO)
     end)
 end, {
     silent = true,
