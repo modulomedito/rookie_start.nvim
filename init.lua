@@ -1375,6 +1375,9 @@ add_lazy({
                 vim.cmd("normal! m6")
                 local saved_vcol = vim.fn.virtcol(".")
                 vim.cmd(range .. "s/。/. /ge")
+                -- Add one space between half-width English punctuation and a
+                -- following full-width character, e.g. "abc,中文" -> "abc, 中文".
+                vim.cmd(range .. [[s/\([,;:!?.]\)\([^ -~]\)/\1 \2/ge]])
                 vim.cmd("noh")
                 vim.cmd("normal! `6")
                 local lnum = vim.fn.line(".")
@@ -1382,7 +1385,7 @@ add_lazy({
                 vim.fn.cursor(lnum, math.max(byte_col, 1))
             end,
             mode = { "n", "v" },
-            desc = "Convert full-width 。 to half-width . ",
+            desc = "Convert full-width 。 to half-width . ; space before full-width chars",
         },
         {
             "<leader>fo)",
