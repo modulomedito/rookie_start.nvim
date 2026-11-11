@@ -1309,6 +1309,67 @@ add_lazy({
     end,
 })
 
+-- Spaces between half-width punctuation/quotes and full-width chars,
+-- e.g. "abc,中文" -> "abc, 中文" and 中文"引用"中文 -> 中文 "引用" 中文.
+-- Straight quotes alternate open/close within each line, so a closing
+-- quote never gets a space before it. Full-width punctuation (，。： etc.)
+-- never gets extra spaces around it.
+local function is_fullwidth_punct(ch)
+    local cp = vim.fn.char2nr(ch)
+    if cp == 0 then
+        return false
+    end
+    return (cp >= 0x3000 and cp <= 0x303F) -- CJK punctuation
+        or (cp >= 0xFF01 and cp <= 0xFF65) -- fullwidth forms
+        or (cp >= 0x2014 and cp <= 0x2015) -- — ―
+        or (cp >= 0x2018 and cp <= 0x201D) -- ‘ ’ “ ”
+        or cp == 0x2026 -- …
+end
+
+local function space_punct_and_quotes()
+    vim.cmd([[%s/\([,;:!?.%]\)\([^ -~]\)/\1 \2/ge]])
+    for lnum = 1, vim.fn.line("$") do
+        local line = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1] or ""
+        if line:find('"', 1, true) then
+            local chars = vim.fn.split(line, "\\zs")
+            local out = {}
+            local depth = 0
+            local pending_space = false
+            local changed = false
+            for i, ch in ipairs(chars) do
+                if ch == '"' then
+                    if depth == 0 then
+                        -- Opening quote: space before a preceding full-width char
+                        local prev = (i > 1) and chars[i - 1] or ""
+                        if #prev > 1 and not is_fullwidth_punct(prev) then
+                            table.insert(out, " ")
+                            changed = true
+                        end
+                        depth = 1
+                    else
+                        -- Closing quote: space after a following full-width char
+                        local nxt = (i < #chars) and chars[i + 1] or ""
+                        if #nxt > 1 and not is_fullwidth_punct(nxt) then
+                            pending_space = true
+                            changed = true
+                        end
+                        depth = 0
+                    end
+                else
+                    if pending_space then
+                        table.insert(out, " ")
+                        pending_space = false
+                    end
+                end
+                table.insert(out, ch)
+            end
+            if changed then
+                vim.api.nvim_buf_set_lines(0, lnum - 1, lnum, false, { table.concat(out) })
+            end
+        end
+    end
+end
+
 add_lazy({
     "stevearc/conform.nvim",
     event = { "BufWritePre" },
@@ -1375,9 +1436,6 @@ add_lazy({
                 vim.cmd("normal! m6")
                 local saved_vcol = vim.fn.virtcol(".")
                 vim.cmd(range .. "s/。/. /ge")
-                -- Add one space between half-width English punctuation and a
-                -- following full-width character, e.g. "abc,中文" -> "abc, 中文".
-                vim.cmd(range .. [[s/\([,;:!?.]\)\([^ -~]\)/\1 \2/ge]])
                 vim.cmd("noh")
                 vim.cmd("normal! `6")
                 local lnum = vim.fn.line(".")
@@ -1385,7 +1443,7 @@ add_lazy({
                 vim.fn.cursor(lnum, math.max(byte_col, 1))
             end,
             mode = { "n", "v" },
-            desc = "Convert full-width 。 to half-width . ; space before full-width chars",
+            desc = "Convert full-width 。 to half-width . ",
         },
         {
             "<leader>fo)",
@@ -1499,6 +1557,10 @@ add_lazy({
                 -- Remove trailing whitespaces
                 vim.cmd("%s/\\s\\+$//e")
                 vim.cmd("%s/\\r\\+$//e")
+                -- Space punctuation/quotes vs full-width chars (md/txt only)
+                if vim.bo.filetype == "markdown" or vim.bo.filetype == "text" then
+                    space_punct_and_quotes()
+                end
                 -- LSP format
                 local ok, conform = pcall(require, "conform")
                 if ok then
@@ -1520,7 +1582,7 @@ add_lazy({
                 vim.cmd("noh")
             end,
             mode = "n",
-            desc = "Format and save (conform)",
+            desc = "Format and save (conform); md/txt spacing",
         },
         {
             "<C-s>",
@@ -1537,6 +1599,10 @@ add_lazy({
                 -- Remove trailing whitespaces
                 vim.cmd("%s/\\s\\+$//e")
                 vim.cmd("%s/\\r\\+$//e")
+                -- Space punctuation/quotes vs full-width chars (md/txt only)
+                if vim.bo.filetype == "markdown" or vim.bo.filetype == "text" then
+                    space_punct_and_quotes()
+                end
                 -- LSP format
                 local ok, conform = pcall(require, "conform")
                 if ok then
@@ -1559,7 +1625,7 @@ add_lazy({
                 vim.api.nvim_feedkeys("a", "n", false) -- "a" = after cursor, undoes <Esc> left-shift
             end,
             mode = "i",
-            desc = "Format and save (conform), stay in insert mode",
+            desc = "Format and save (conform), stay in insert; md/txt spacing",
         },
     },
     opts = {
