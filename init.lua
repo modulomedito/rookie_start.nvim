@@ -1816,6 +1816,16 @@ add_lazy({
     end,
 })
 
+-- Show the enclosing context (function/class/etc.) at the top of the window
+add_lazy({
+    "nvim-treesitter/nvim-treesitter-context",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opts = {
+        enable = true,
+        max_lines = 0,
+    },
+})
+
 -- Useful plugin to show you pending keybinds.
 add_lazy({
     "folke/which-key.nvim",
