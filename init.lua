@@ -242,14 +242,14 @@ vim.keymap.set("n", "<M-Down>", ":m .+1<CR>==", {
 vim.keymap.set("n", "<M-Up>", ":m .-2<CR>==", {
     desc = "Move line up",
 })
-vim.keymap.set("n", "<M-j>", ":m .+1<CR>==", {
-    silent = true,
-    desc = "Move line down",
-})
-vim.keymap.set("n", "<M-k>", ":m .-2<CR>==", {
-    silent = true,
-    desc = "Move line up",
-})
+-- vim.keymap.set("n", "<M-j>", ":m .+1<CR>==", {
+--     silent = true,
+--     desc = "Move line down",
+-- })
+-- vim.keymap.set("n", "<M-k>", ":m .-2<CR>==", {
+--     silent = true,
+--     desc = "Move line up",
+-- })
 
 -- Window & Tab management
 vim.keymap.set("n", "+", ":vertical resize +2<CR>", {
