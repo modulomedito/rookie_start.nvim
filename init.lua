@@ -318,6 +318,10 @@ vim.keymap.set("n", "<leader>da", function()
     local date = os.date("%Y-%m-%d-%w")
     vim.api.nvim_put({ date }, "c", true, true)
 end, { desc = "Insert current date at cursor" })
+vim.keymap.set("c", "<C-t>", function()
+    local date = os.date("%Y%m%d-%w-%H%M%S")
+    vim.api.nvim_feedkeys(date, "n", false)
+end, { desc = "Insert date time (YYYYMMDD-E-HHMMSS) at cmdline cursor" })
 -- vim.keymap.set("n", "<leader>tm", "<cmd>vs|term<CR>", {
 --     silent = true,
 --     desc = "Open terminal in split",
