@@ -1769,7 +1769,7 @@ add_lazy({
         })
         ---@diagnostic disable-next-line: duplicate-set-field
         statusline.section_location = function()
-            return "%2l:%-2v %p%%"
+            return "%2l:%-2v %p%%" .. require("rookie_ai").statusline()
         end
     end,
 })
