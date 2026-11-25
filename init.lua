@@ -470,6 +470,9 @@ vim.keymap.set("x", "<CR>", "Jgq", {
 vim.keymap.set("t", "fd", [[<C-\><C-n>]], {
     desc = "Exit terminal mode",
 })
+vim.keymap.set("t", "<CR>", [[<CR><C-\><C-n>]], {
+    desc = "Enter then exit terminal mode",
+})
 vim.keymap.set("t", "<C-v>", [[<C-\><C-n>pa]], {
     desc = "Paste and re-enter terminal mode",
 })
