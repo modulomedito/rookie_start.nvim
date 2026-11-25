@@ -404,10 +404,10 @@ vim.keymap.set({ "n", "v" }, "<C-u>", "<C-u>zz", {
     silent = true,
     desc = "Scroll up and center",
 })
--- vim.keymap.set({ "n", "v" }, "<C-f>", "<C-u>zz", {
---     silent = true,
---     desc = "Scroll up and center",
--- })
+vim.keymap.set({ "n", "v" }, "<C-f>", "<C-u>zz", {
+    silent = true,
+    desc = "Scroll up and center",
+})
 
 -- Normal, Visual, Operator-pending
 vim.keymap.set({ "n", "v", "o" }, "H", "g^", {
