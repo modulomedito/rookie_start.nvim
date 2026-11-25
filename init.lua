@@ -492,7 +492,7 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {
 -- })
 
 -- Copy location(s) — works in normal and (line) visual mode
-vim.keymap.set({ "n", "x" }, "<leader>aic", function()
+vim.keymap.set({ "n", "x" }, "<leader>ac", function()
     local path = vim.fn.expand("%:.") -- path relative to cwd
     if path == "" then
         path = "[No Name]"
